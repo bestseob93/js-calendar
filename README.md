@@ -2,8 +2,11 @@
 
 ```
 git clone https://github.com/bestseob93/js-calendar.git
+```
 
-// install with npm
+
+### install with npm
+```
 npm install
 
 // dev
@@ -13,8 +16,8 @@ npm start
 npm build
 ```
 
+### install with yarn
 ```
-// install with yarn
 yarn
 
 // dev
