@@ -1,5 +1,6 @@
+import moment from 'moment'
+
 export function a () {
-  const a = document.getElementById('aa')
-  a.innerHTML = 'hihi'
+  console.log(moment.locale())
   return console.log('bye')
 }
