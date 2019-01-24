@@ -1,5 +1,6 @@
 import moment from 'moment'
-import { a } from 'a'
+import Store from 'store'
 
+const store = new Store('js-calendar')
+console.log(store)
 console.log(moment.locale())
-a()
