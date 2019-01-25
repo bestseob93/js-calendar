@@ -9,8 +9,6 @@ export default class Model {
       weekdaysShort: ['일', '월', '화', '수', '목', '금', '토'],
       weekdaysMin: ['일', '월', '화', '수', '목', '금', '토']
     })
-    this.month = moment().clone() // 선택된 날짜 정보를 복사한다.
-    this.start = moment().clone()
   }
 
   /**
@@ -64,6 +62,8 @@ export default class Model {
   }
 
   get (name, callback) {
+    this.month = moment().clone() // 선택된 날짜 정보를 복사한다.
+    this.start = moment().clone()
     if (name === 'month') {
       this.start.date(1)
       this.removeTime(this.start.day(0))
