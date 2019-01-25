@@ -18,7 +18,7 @@ export default class Controller {
 
   showMonth () {
     console.log('clicked')
-    this.view.renderMonth()
+    this.model.get('month', this.view.renderMonth.bind(this.view))
   }
 
   showWeek () {
