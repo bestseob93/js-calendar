@@ -31,8 +31,8 @@ export default class Template {
         const days = data[i].days
         view += '<tr>'
         for (let j = 0; j < days.length; j++) {
-          const isSunday = (days[j].name === 'Su')
-          const isSaturday = (days[j].name === 'Sa')
+          const isSunday = (days[j].name === '일')
+          const isSaturday = (days[j].name === '토')
           const day = days[j].number
           const isToday = days[j].isToday
           const isCurrentMonth = days[j].isCurrentMonth
@@ -42,7 +42,7 @@ export default class Template {
           } else if (isCurrentMonth) {
             view += `<td class="${isSunday ? 'su' : ''} ${isSaturday ? 'sa' : ''} current-month">${day}</td>`
           } else {
-            view += `<td class="${isSunday ? 'su' : ''} ${isSaturday ? 'sa' : ''}">${day}</td>`
+            view += `<td>${day}</td>`
           }
         }
         view += '</tr>'
