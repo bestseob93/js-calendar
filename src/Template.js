@@ -10,7 +10,7 @@ export default class Template {
    */
   show (mode, data) {
     let view = ''
-    if (mode === 'month') {
+    if (data) {
       view += `<table>
       <thead class="table__head">
         <tr>

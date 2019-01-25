@@ -7,7 +7,13 @@ export default class View {
     this.template = template
     this.$calendar = qs('.calendar__body')
 
+    /* header left */
     this.$today = qs('.header__date-today')
+    this.$prevBtn = qs('.nav__button--prev')
+    this.$nextBtn = qs('.nav__button--next')
+    this.$todayBtn = qs('.nav__button--today')
+
+    /* header center(tabs) */
     this.$monthBtn = qs('[data-mode="Month"]')
     this.$weekBtn = qs('[data-mode="Week"]')
     this.$dayBtn = qs('[data-mode="Day"]')
@@ -28,6 +34,18 @@ export default class View {
    */
   renderTodayDate () {
     this.$today.innerHTML = moment().format('YYYY.MM.DD')
+  }
+
+  bindPrevBtnClick (handler) {
+    $on(this.$prevBtn, 'click', handler)
+  }
+
+  bindNextBtnClick (handler) {
+    $on(this.$nextBtn, 'click', handler)
+  }
+
+  bindTodayBtnClick (handler) {
+    $on(this.$todayBtn, 'click', handler)
   }
 
   bindMonthBtnClick (handler) {
