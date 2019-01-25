@@ -77,4 +77,11 @@ export default class View {
   renderDay () {
     this.$calendar.innerHTML = this.template.show('day')
   }
+
+  renderAddTodo () {
+    const modal = document.createElement('div')
+    modal.classList.add('modal__container')
+
+    document.body.prepend(modal)
+  }
 }

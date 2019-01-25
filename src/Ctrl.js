@@ -11,6 +11,8 @@ export default class Controller {
     view.bindMonthBtnClick(this.showMonth.bind(this))
     view.bindWeekBtnClick(this.showWeek.bind(this))
     view.bindDayBtnClick(this.showDay.bind(this))
+
+    view.bindAddTodoBtnClick(this.showAddTodo.bind(this))
   }
 
   routeChange (locationHash) {
@@ -44,5 +46,9 @@ export default class Controller {
 
   showDay () {
     this.view.renderDay()
+  }
+
+  showAddTodo () {
+    this.view.renderAddTodo()
   }
 }
