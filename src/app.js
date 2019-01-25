@@ -3,33 +3,21 @@
 // import Months from 'views/Months/Months'
 import Model from './Model'
 import View from './View'
+import Template from './Template'
 import Controller from './Ctrl'
 
 export default class App {
   constructor () {
-    // this.store = new Store('js-calendar')
-    // this.state = {
-    //   test: 'hi'
-    // }
     this.model = new Model()
-    this.controller = new Controller(this.model)
-    this.view = new View(this.controller)
+    this.template = new Template()
+    this.view = new View(this.template)
+    this.controller = new Controller(this.model, this.view)
   }
-
-  // render () {
-  //   const calendar = document.getElementById('js-calendar')
-  //   this.header = new Header(calendar, this.state)
-  //   this.months = new Months(calendar, this.state)
-  //   // calendar.appendChild(main)
-  // }
-
-  // destroy () {
-  //   delete this.header
-  //   delete this.months
-  // }
 }
 
-// const app = new App()
+const app = new App()
+
+console.log(app)
 
 // window.onload = () => {
 //   app.constructor()

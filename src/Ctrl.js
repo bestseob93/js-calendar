@@ -1,32 +1,13 @@
 export default class Controller {
-  constructor (model) {
+  constructor (model, view) {
+    console.log('ctrl created')
     this.model = model
-
-    // this.handleEvent = this.handleEvent.bind(this)
-    // this.getModelHeading = this.getModelHeading.bind(this)
-    // this.clickHandler = this.clickHandler.bind(this)
+    this.view = view
   }
 
-  handleEvent (e) {
-    const self = this
-    e.stopPropagation()
-
-    switch (e.type) {
-      case 'click':
-        self.clickHandler(e.target)
-        break
-      default:
-        console.log(e.target)
-    }
-  }
-
-  getHtmlState () {
-    return this.model.htmlState
-  }
-
-  clickHandler (target) {
-    console.log(target.dataset.mode)
-    this.model.changeHeading(target.dataset.mode)
-    this.model.notifyAll()
+  routeChange (locationHash) {
+    const route = locationHash.split('/')[1]
+    const page = route || ''
+    this.updateFilterStage(page)
   }
 }
