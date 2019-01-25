@@ -1,16 +1,16 @@
-export const qs = (selector, scope) => {
+export function qs (selector, scope) {
   return (scope || document).querySelector(selector)
 }
 
-export const qsa = (selector, scope) => {
+export function qsa (selector, scope) {
   return (scope || document).querySelectorAll(selector)
 }
 
-export const $on = (target, type, callback, useCapture) => {
+export function $on (target, type, callback, useCapture) {
   target.addEventListener(type, callback, !!useCapture)
 }
 
-export const $delegate = (target, selector, type, handler) => {
+export function $delegate (target, selector, type, handler) {
   function dispatchEvent (event) {
     const targetElement = event.target
     const potentialElements = qsa(selector, target)
