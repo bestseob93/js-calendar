@@ -31,7 +31,6 @@ export default class View {
    * @param {moment()} date 모멘트에서 가져온 날짜 객체
    */
   removeTime (date) {
-    console.log(date)
     return date.day(0).hour(0).minute(0).second(0).millisecond(0)
   }
 
@@ -46,10 +45,10 @@ export default class View {
       this.week.push({ days: this.buildWeek(date.clone(), month) })
 
       date.add(1, 'w')
-      done = (count++ > 2 && monthIndex) !== date.month() // 달이 넘어 가면 멈춘다.
+      done = count++ > 2 && (monthIndex !== date.month()) // 달이 넘어 가면 멈춘다.
+      console.log(count)
       monthIndex = date.month()
     }
-
     console.log(this.week)
   }
 
@@ -68,7 +67,6 @@ export default class View {
       date.add(1, 'd')
     }
 
-    console.log(days)
     return days
   }
 
