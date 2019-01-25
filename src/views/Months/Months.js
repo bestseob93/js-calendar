@@ -1,5 +1,5 @@
 export default class Months {
-  constructor (parentElement) {
+  constructor (parentElement, state) {
     const body = document.createElement('div')
     body.classList.add('calendar__body')
     body.innerHTML = `
@@ -66,5 +66,11 @@ export default class Months {
         </table>
       </div>`
     parentElement.appendChild(body)
+
+    console.log(state)
+  }
+
+  render () {
+    return 'hi'
   }
 }

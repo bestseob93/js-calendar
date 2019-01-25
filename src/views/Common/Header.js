@@ -1,5 +1,6 @@
 export default class Header {
-  constructor (parentElement) {
+  constructor (parentElement, state) {
+    this.state = state
     const header = document.createElement('div')
     header.classList.add('calendar__header')
     header.innerHTML = `
@@ -15,6 +16,32 @@ export default class Header {
         <button class="header__tab-months">월간</button>
       </div>
       <button class="header__todo-button--add">일정 추가</button>`
+
     parentElement.appendChild(header)
+
+    const s = document.querySelector('.nav__button--prev')
+    console.log(s)
+    s.addEventListener('click', (e) => {
+      console.log('zzz')
+      this.state.test = 'bye'
+    })
+  }
+
+  handleEvent (e) {
+    const self = this
+    e.stopPropagation()
+
+    switch (e.type) {
+      case 'click':
+        self.clickHandler(e.target)
+        break
+      default:
+        console.log(e.target)
+    }
+  }
+
+  clickHandler (target) {
+    this.model.heading = 'World'
+    target.innerHTML = this.getModelHeading()
   }
 }
