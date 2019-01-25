@@ -11,49 +11,67 @@ export default class View {
     this.$monthBtn = qs('[data-mode="Month"]')
     this.$weekBtn = qs('[data-mode="Week"]')
     this.$dayBtn = qs('[data-mode="Day"]')
-    // initial
-    this.$calendar.innerHTML = template.show('month')
-    this.renderTodayDate()
+
     const month = moment().clone() // 선택된 날짜 정보를 복사한다.
     const start = moment().clone()
     start.date(1)
 
-    this.removeTime(start.day(0)) // 이달의 첫일의 일요일 날짜의 객체를 시작일로 세팅.
-    this.buildMonth(start, month) // scope와 시작일, 해당 월의 정보를 넘긴다.
+    this.removeTime(start.day(0))
+    this.buildMonth(start, month)
   }
 
+  /**
+   * 최초 실행 필요한 로직
+   */
+  init () {
+    this.$calendar.innerHTML = this.template.show('month')
+    this.renderTodayDate()
+  }
+
+  /**
+   * 오늘 날짜 출력
+   */
   renderTodayDate () {
     this.$today.innerHTML = moment().format('YYYY.MM.DD')
   }
 
   /**
-   * 첫 달이 맨 앞이 아닌 경우 이전 달 또는 다음 달 날짜 추가해주기 위한 헬퍼 함수
+   * 이달의 첫일의 일요일 날짜의 객체를 시작일로 세팅
    * @param {moment()} date 모멘트에서 가져온 날짜 객체
+   * @example 2019년 1월 1일은 화요일부터 이므로 일요일에 해당하는 날짜는 2018년 12월 30일이다.
    */
   removeTime (date) {
     return date.day(0).hour(0).minute(0).second(0).millisecond(0)
   }
 
+  /**
+   * 월을 그린다.
+   * @param {moment()} start 시작일
+   * @param {moment()} month 월
+   */
   buildMonth (start, month) {
     this.week = []
     const date = start.clone()
-    let done = false
-    let monthIndex = date.month()
+    let monthIndex = date.month() // 달의 인덱스는 우리가 보는 달 -1이다.
     let count = 0
+    let isNextMonth = false
 
-    while (!done) {
+    while (!isNextMonth) {
       this.week.push({ days: this.buildWeek(date.clone(), month) })
-
       date.add(1, 'w')
-      done = count++ > 2 && (monthIndex !== date.month()) // 달이 넘어 가면 멈춘다.
-      console.log(count)
+
+      isNextMonth = count++ > 2 && (monthIndex !== date.month()) // 달이 넘어 가면 멈춤
       monthIndex = date.month()
     }
-    console.log(this.week)
   }
 
+  /**
+   * 주를 그린다.
+   * @param {moment()} date 날짜 객체
+   * @param {moment()} month 월
+   */
   buildWeek (date, month) {
-    var days = [] // 총 7일의 정보가 들어간다.
+    const days = [] // 총 7일의 정보가 들어간다.
     for (let i = 0; i < 7; i++) {
       days.push({
         name: date.format('dd').substring(0, 2),
