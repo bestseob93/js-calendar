@@ -18,6 +18,8 @@ export default class View {
     this.$weekBtn = qs('[data-mode="Week"]')
     this.$dayBtn = qs('[data-mode="Day"]')
 
+    this.$addTodo = qs('.header__todo-button--add')
+
     this.init()
   }
 
@@ -58,6 +60,10 @@ export default class View {
 
   bindDayBtnClick (handler) {
     $on(this.$dayBtn, 'click', handler)
+  }
+
+  bindAddTodoBtnClick (handler) {
+    $on(this.$addTodo, 'click', handler)
   }
 
   renderMonth (data) {

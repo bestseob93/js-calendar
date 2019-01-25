@@ -31,6 +31,7 @@ export default class Controller {
 
   showToday () {
     console.log('show Today')
+    this.model.get('today', this.view.renderMonth.bind(this.view))
   }
 
   showMonth () {
