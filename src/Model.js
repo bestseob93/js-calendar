@@ -3,6 +3,8 @@ import moment from 'moment'
 export default class Model {
   constructor () {
     console.log('Model created')
+    this.month = moment().clone() // 선택된 날짜 정보를 복사한다.
+    this.start = moment().clone()
   }
 
   /**
@@ -22,16 +24,13 @@ export default class Model {
   buildMonth (start, month) {
     this.week = []
     const date = start.clone()
-    let monthIndex = date.month() // 달의 인덱스는 우리가 보는 달 -1이다.
     let count = 0
     let isNextMonth = false
 
     while (!isNextMonth) {
       this.week.push({ days: this.buildWeek(date.clone(), month) })
       date.add(1, 'w')
-
-      isNextMonth = count++ > 2 && (monthIndex !== date.month()) // 달이 넘어 가면 멈춤
-      monthIndex = date.month()
+      isNextMonth = count++ === 5 // 6줄로 렌더링
     }
   }
 
@@ -60,12 +59,23 @@ export default class Model {
 
   get (name, callback) {
     if (name === 'month') {
-      const month = moment().clone() // 선택된 날짜 정보를 복사한다.
-      const start = moment().clone()
-      start.date(1)
+      this.start.date(1)
+      this.removeTime(this.start.day(0))
+      this.buildMonth(this.start, this.month)
 
-      this.removeTime(start.day(0))
-      this.buildMonth(start, month)
+      callback(this.week)
+    } else if (name === 'prev') {
+      const prev = this.month.clone()
+      this.removeTime(prev.month(prev.month() - 1).date(1))
+      this.month.month(this.month.month() - 1)
+      this.buildMonth(prev, this.month)
+
+      callback(this.week)
+    } else if (name === 'next') {
+      const next = this.month.clone()
+      this.removeTime(next.month(next.month() + 1).date(1))
+      this.month.month(this.month.month() + 1)
+      this.buildMonth(next, this.month)
 
       callback(this.week)
     }
