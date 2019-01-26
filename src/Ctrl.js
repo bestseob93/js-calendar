@@ -57,7 +57,6 @@ export default class Controller {
   }
 
   handleStartDateChange (e) {
-    console.log(e.target.value.replace('T', '-'))
     const result = new Date(e.target.value).getTime() // datetimelocal 값 milliseconds로 변환 (end시간과 비교 하기 위함)
 
     console.log(result)

@@ -44,6 +44,26 @@ export default class Model {
    * @param {moment()} month 월
    */
   buildWeek (date, month) {
+    var datas = [
+      {
+        title: '과제 시작하기',
+        startDate: '2019-01-23T14:00',
+        endDate: '2019-01-30T14:00',
+        memo: 'blahblah'
+      },
+      {
+        title: '다른 일정 보기',
+        startDate: '2019-01-23T15:00',
+        endDate: '2019-01-24T14:00',
+        memo: 'blahblah'
+      },
+      {
+        title: '면접보기',
+        startDate: '2019-01-31T10:00',
+        endDate: '2019-01-31-12:00',
+        memo: '버즈니면접'
+      }
+    ]
     const days = [] // 총 7일의 정보가 들어간다.
     for (let i = 0; i < 7; i++) {
       days.push({
@@ -51,6 +71,9 @@ export default class Model {
         number: date.date(),
         isCurrentMonth: date.month() === month.month(),
         isToday: date.isSame(new Date(), 'day'),
+        startEvents: datas.filter(data => {
+          return data.startDate.split('T')[0] === date.format('YYYY-MM-DD')
+        }),
         date: date
       })
 

@@ -29,6 +29,7 @@ export default class Template {
         const days = data[i].days
         view += '<tr>'
         for (let j = 0; j < days.length; j++) {
+          console.log(days[j])
           const id = days[j].date.format('YYYY-MM-DD')
           const isSunday = (days[j].name === '일')
           const isSaturday = (days[j].name === '토')
