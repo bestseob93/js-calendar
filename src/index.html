@@ -14,12 +14,12 @@
         <span>X</span>
       </div>
       <div class="modal__body">
-        <div><span>제목</span><input type="text" /></div>
-        <div><span>시작일시</span><input type="datetime-local" /></div>
-        <div><span>종료일시</span><input type="datetime-local" /></div>
-        <div><span>메모</span><textarea></textarea></div>
+        <div><span>제목</span><input name="title" type="text" /></div>
+        <div><span>시작일시</span><input name="startDate" type="datetime-local" step="3600" /></div>
+        <div><span>종료일시</span><input name="endDate" type="datetime-local" step="3600" /></div>
+        <div><span>메모</span><textarea name="memo"></textarea></div>
       </div>
-      <div class="modal__footeer">
+      <div class="modal__footer">
         <button class="btn">저장</button>
       </div>
     </div>

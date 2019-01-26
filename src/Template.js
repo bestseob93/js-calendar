@@ -24,13 +24,12 @@ export default class Template {
         </tr>
       </thead>
       <tbody class="table__body">`
-      console.log(data)
       const weeks = data
       for (let i = 0; i < weeks.length; i++) {
-        console.log(data[i].days)
         const days = data[i].days
         view += '<tr>'
         for (let j = 0; j < days.length; j++) {
+          const id = days[j].date.format('YYYY-MM-DD')
           const isSunday = (days[j].name === '일')
           const isSaturday = (days[j].name === '토')
           const day = days[j].number
@@ -38,11 +37,11 @@ export default class Template {
           const isCurrentMonth = days[j].isCurrentMonth
 
           if (isToday) {
-            view += `<td class="${isSunday ? 'su' : ''} ${isSaturday ? 'sa' : ''} current-month today">${day}</td>`
+            view += `<td class="current-month today${isSunday ? ' su' : ''}${isSaturday ? ' sa' : ''}" data-dateId=${id}>${day}</td>`
           } else if (isCurrentMonth) {
-            view += `<td class="${isSunday ? 'su' : ''} ${isSaturday ? 'sa' : ''} current-month">${day}</td>`
+            view += `<td class="current-month${isSunday ? ' su' : ''}${isSaturday ? ' sa' : ''}" data-dateId=${id}>${day}</td>`
           } else {
-            view += `<td>${day}</td>`
+            view += `<td data-dateId=${id}>${day}</td>`
           }
         }
         view += '</tr>'

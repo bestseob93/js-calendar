@@ -13,6 +13,10 @@ export default class Controller {
     view.bindDayBtnClick(this.showDay.bind(this))
 
     view.bindAddTodoBtnClick(this.showAddTodo.bind(this))
+
+    view.bindStartDate(this.handleStartDateChange.bind(this))
+
+    this.showMonth()
   }
 
   routeChange (locationHash) {
@@ -50,5 +54,12 @@ export default class Controller {
 
   showAddTodo () {
     this.view.renderAddTodo()
+  }
+
+  handleStartDateChange (e) {
+    console.log(e.target.value.replace('T', '-'))
+    const result = new Date(e.target.value).getTime() // datetimelocal 값 milliseconds로 변환 (end시간과 비교 하기 위함)
+
+    console.log(result)
   }
 }

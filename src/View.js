@@ -20,6 +20,11 @@ export default class View {
 
     this.$addTodo = qs('.header__todo-button--add')
 
+    this.$title = qs('input[name="title"]')
+    this.$startDate = qs('input[name="startDate"]')
+    this.$endDate = qs('input[name="endDate"]')
+    this.$memo = qs('textarea[name="memo"]')
+
     this.init()
   }
 
@@ -64,6 +69,10 @@ export default class View {
 
   bindAddTodoBtnClick (handler) {
     $on(this.$addTodo, 'click', handler)
+  }
+
+  bindStartDate (handler) {
+    $on(this.$startDate, 'change', handler)
   }
 
   renderMonth (data) {
