@@ -29,13 +29,17 @@ export default class Template {
         const days = data[i].days
         view += '<tr>'
         for (let j = 0; j < days.length; j++) {
-          console.log(days[j])
           const id = days[j].date.format('YYYY-MM-DD')
           const isSunday = (days[j].name === '일')
           const isSaturday = (days[j].name === '토')
           const day = days[j].number
           const isToday = days[j].isToday
           const isCurrentMonth = days[j].isCurrentMonth
+
+          // 이벤트 가지고 있는 td 소리질러
+          if (days[j].hasEvents.length > 0) {
+            console.log(day)
+          }
 
           if (isToday) {
             view += `<td class="current-month today${isSunday ? ' su' : ''}${isSaturday ? ' sa' : ''}" data-dateId=${id}>${day}</td>`
