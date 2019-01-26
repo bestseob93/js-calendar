@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 export default class Controller {
   constructor (model, view) {
     console.log('ctrl created')
@@ -57,8 +59,13 @@ export default class Controller {
   }
 
   handleStartDateChange (e) {
-    const result = new Date(e.target.value).getTime() // datetimelocal 값 milliseconds로 변환 (end시간과 비교 하기 위함)
+    const value = e.target.value
+    const yyyymmdd = value.split('T')[0]
+    const result = new Date(yyyymmdd).getTime() // datetimelocal 값 milliseconds로 변환 (end시간과 비교 하기 위함)
 
     console.log(result)
+    const momentValue = moment()
+    console.log(momentValue.valueOf())
+    console.log(new Date(momentValue.format('YYYY-MM-DD')).getTime())
   }
 }

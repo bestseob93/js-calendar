@@ -46,18 +46,24 @@ export default class Model {
   buildWeek (date, month) {
     var datas = [
       {
+        id: 1,
+        color: '#fff000',
         title: '과제 시작하기',
         startDate: '2019-01-23T14:00',
         endDate: '2019-01-30T14:00',
         memo: 'blahblah'
       },
       {
+        id: 2,
+        color: '#fff111',
         title: '다른 일정 보기',
         startDate: '2019-01-23T15:00',
         endDate: '2019-01-24T14:00',
         memo: 'blahblah'
       },
       {
+        id: 3,
+        color: '#000',
         title: '면접보기',
         startDate: '2019-01-31T10:00',
         endDate: '2019-01-31-12:00',
@@ -73,6 +79,21 @@ export default class Model {
         isToday: date.isSame(new Date(), 'day'),
         startEvents: datas.filter(data => {
           return data.startDate.split('T')[0] === date.format('YYYY-MM-DD')
+        }),
+        endEvents: datas.filter(data => {
+          return data.endDate.split('T')[0] === date.format('YYYY-MM-DD')
+        }),
+        hasEvents: datas.filter(data => {
+          // 현재의 yyyymmss 의 밀리세컨즈가 일정 시작의 yyyymmss 밀리세컨즈와 일정 끝의 yyyymmss 밀리세컨즈의 사이에 있으면 해당 데이터 리턴
+          const startDate = data.startDate.split('T')[0]
+          const endDate = data.endDate.split('T')[0]
+          const momentToMs = new Date(date.format('YYYY-MM-DD')).getTime()
+          const isStart = momentToMs >= new Date(startDate).getTime()
+          const isEnd = momentToMs <= new Date(endDate).getTime()
+
+          if (isStart && isEnd) {
+            return true
+          }
         }),
         date: date
       })
