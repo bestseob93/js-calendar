@@ -1,5 +1,4 @@
 /* eslint no-unused-vars: 0 */
-
 import Model from './Model'
 import View from './View'
 import Template from './Template'

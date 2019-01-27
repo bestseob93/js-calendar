@@ -1,10 +1,15 @@
-import moment from 'moment'
-
 export default class Controller {
   constructor (model, view) {
     console.log('ctrl created')
     this.model = model
     this.view = view
+
+    this.inputDatas = {
+      title: '',
+      startDate: '',
+      endDate: '',
+      memo: ''
+    }
 
     view.bindPrevBtnClick(this.showPrev.bind(this))
     view.bindNextBtnClick(this.showNext.bind(this))
@@ -16,9 +21,20 @@ export default class Controller {
 
     view.bindAddTodoBtnClick(this.showAddTodo.bind(this))
 
+    view.bindTitleChange(this.handleTitleChange.bind(this))
     view.bindStartDateChange(this.handleStartDateChange.bind(this))
+    view.bindEndDateChange(this.handleEndDateChange.bind(this))
+    view.bindMemoChange(this.handleMemoChange.bind(this))
+    view.bindOnSubmit(this.handleSubmit.bind(this))
 
     this.showMonth()
+  }
+
+  setInputDatas (key, value) {
+    this.inputDatas = {
+      ...this.inputDatas,
+      [key]: value
+    }
   }
 
   routeChange (locationHash) {
@@ -56,17 +72,43 @@ export default class Controller {
 
   showAddTodo () {
     console.log('addtodo clicked')
-    this.view.renderAddTodo().bind(this.view)
+    this.view.renderAddTodo()
+  }
+
+  handleTitleChange (e) {
+    this.setInputDatas('title', e.target.value)
   }
 
   handleStartDateChange (e) {
-    const value = e.target.value
-    const yyyymmdd = value.split('T')[0]
-    const result = new Date(yyyymmdd).getTime() // datetimelocal 값 milliseconds로 변환 (end시간과 비교 하기 위함)
+    this.setInputDatas('startDate', e.target.value)
+  }
 
-    console.log(result)
-    const momentValue = moment()
-    console.log(momentValue.valueOf())
-    console.log(new Date(momentValue.format('YYYY-MM-DD')).getTime())
+  handleEndDateChange (e) {
+    this.setInputDatas('endDate', e.target.value)
+  }
+
+  handleMemoChange (e) {
+    this.setInputDatas('memo', e.target.value)
+  }
+
+  handleSubmit (e) {
+    e.preventDefault()
+
+    const formData = {
+      ...this.inputDatas
+    }
+
+    const startDateToMs = new Date(formData.startDate.split('T')[0]).getTime()
+    const endDateToMs = new Date(formData.endDate.split('T')[0]).getTime()
+
+    if (formData.title === '' || typeof formData.title !== 'string') {
+      window.alert('일정의 제목을 입력해주세요')
+    }
+
+    if (endDateToMs <= startDateToMs) {
+      window.alert('시작일시는 종료일시보다 이전이어야 합니다')
+    }
+    // const yyyymmdd = value.split('T')[0]
+    // const result = new Date(yyyymmdd).getTime() // datetimelocal 값 milliseconds로 변환 (end시간과 비교 하기 위함)
   }
 }
