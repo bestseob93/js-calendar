@@ -27,6 +27,8 @@ export default class View {
     this.$endDate = qs('input[name="endDate"]')
     this.$memo = qs('textarea[name="memo"]')
 
+    this.$submit = qs('.submit__btn')
+
     this.init()
   }
 
@@ -73,8 +75,24 @@ export default class View {
     $on(this.$addTodo, 'click', handler)
   }
 
-  bindStartDate (handler) {
+  bindTitleChange (handler) {
+    $on(this.$title, 'change', handler)
+  }
+
+  bindStartDateChange (handler) {
     $on(this.$startDate, 'change', handler)
+  }
+
+  bindEndDateChange (handler) {
+    $on(this.$endDate, 'change', handler)
+  }
+
+  bindMemoChange (handler) {
+    $on(this.$memo, 'change', handler)
+  }
+
+  bindOnSubmit (handler) {
+    $on(this.$submit, 'click', handler)
   }
 
   renderMonth (data) {

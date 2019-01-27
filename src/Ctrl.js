@@ -16,7 +16,7 @@ export default class Controller {
 
     view.bindAddTodoBtnClick(this.showAddTodo.bind(this))
 
-    view.bindStartDate(this.handleStartDateChange.bind(this))
+    view.bindStartDateChange(this.handleStartDateChange.bind(this))
 
     this.showMonth()
   }
