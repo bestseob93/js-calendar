@@ -14,13 +14,13 @@ export default class Template {
       view += `<table>
       <thead class="table__head">
         <tr>
-          <th>일</th>
-          <th>월</th>
-          <th>화</th>
-          <th>수</th>
-          <th>목</th>
-          <th>금</th>
-          <th>토</th>
+          <th class="days__header">일</th>
+          <th class="days__header">월</th>
+          <th class="days__header">화</th>
+          <th class="days__header">수</th>
+          <th class="days__header">목</th>
+          <th class="days__header">금</th>
+          <th class="days__header">토</th>
         </tr>
       </thead>
       <tbody class="table__body">`

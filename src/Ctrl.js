@@ -11,6 +11,7 @@ export default class Controller {
       memo: ''
     }
 
+    /* header events */
     view.bindPrevBtnClick(this.showPrev.bind(this))
     view.bindNextBtnClick(this.showNext.bind(this))
     view.bindTodayBtnClick(this.showToday.bind(this))
@@ -20,12 +21,15 @@ export default class Controller {
     view.bindDayBtnClick(this.showDay.bind(this))
 
     view.bindAddTodoBtnClick(this.showAddTodo.bind(this))
+    /* end header events */
 
+    /* modal events */
     view.bindTitleChange(this.handleTitleChange.bind(this))
     view.bindStartDateChange(this.handleStartDateChange.bind(this))
     view.bindEndDateChange(this.handleEndDateChange.bind(this))
     view.bindMemoChange(this.handleMemoChange.bind(this))
     view.bindOnSubmit(this.handleSubmit.bind(this))
+    /* end modal events */
 
     this.showMonth()
   }
@@ -95,7 +99,8 @@ export default class Controller {
     e.preventDefault()
 
     const formData = {
-      ...this.inputDatas
+      ...this.inputDatas,
+      bgColor: Math.floor(Math.random() * 16777215).toString(16) // 백그라운드에 사용할 랜덤 컬러
     }
 
     const startDateToMs = new Date(formData.startDate.split('T')[0]).getTime()
