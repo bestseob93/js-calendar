@@ -55,7 +55,8 @@ export default class Controller {
   }
 
   showAddTodo () {
-    this.view.renderAddTodo()
+    console.log('addtodo clicked')
+    this.view.renderAddTodo().bind(this.view)
   }
 
   handleStartDateChange (e) {

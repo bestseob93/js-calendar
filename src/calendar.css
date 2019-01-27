@@ -40,3 +40,114 @@ td.su {
 td.sa {
   color: #1896ea;
 }
+
+/* modal */
+.modal__container {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 99;
+  display: block;
+}
+.modal {
+  opacity: 1;
+  width: 600px;
+  height: 600px;
+  position: absolute;
+  border-radius: 15px;
+  background-color: #fff;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -webkit-transition: all 0.3s
+}
+
+.modal.opend {
+  opacity: 1;
+}
+
+.modal__header {
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  height: 50px;
+  background-color: #fedb46;
+}
+
+.modal__header h3 {
+  margin: 0;
+  padding: 15px 0 15px 15px;
+}
+
+.modal__header .close {
+  position: absolute;
+  background-color: #fff;
+  width: 28px;
+  height: 28px;
+  border-radius: 14px;
+  top: 12px;
+  right: 15px;
+  color: #fedb46;
+  font-size: 20px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.modal__body {
+  height: 500px;
+  background-color: #fff;
+  padding: 0 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form__input {
+  display: flex;
+  margin: 15px 0;
+}
+
+.form__input:last-child {
+  height: 100%;
+}
+
+.form__input span {
+  flex: 0.2;
+  font-size: 18px;
+}
+.form__input input {
+  flex: 1;
+  height: 35px;
+  padding: 0 10px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+}
+
+.form__input textarea {
+  flex: 1;
+  resize: none;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+}
+
+.modal__footer {
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  height: 50px;
+  padding: 0 15px;
+  background-color: #fff;
+}
+
+.modal__footer .submit__btn {
+  display: block;
+  width: 100%;
+  height: 80%;
+  font-size: 18px;
+  background-color: #fedb46;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+}

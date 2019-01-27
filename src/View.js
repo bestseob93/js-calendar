@@ -6,6 +6,8 @@ export default class View {
     console.log('view created')
     this.template = template
     this.$calendar = qs('.calendar__body')
+    this.$modalContainer = qs('.modal__container')
+    this.$modal = qs('.modal')
 
     /* header left */
     this.$today = qs('.header__date-today')
@@ -88,9 +90,8 @@ export default class View {
   }
 
   renderAddTodo () {
-    const modal = document.createElement('div')
-    modal.classList.add('modal__container')
-
-    document.body.prepend(modal)
+    console.log('33')
+    this.$modalContainer.style.display = 'block'
+    this.$modal.classList.add('opend')
   }
 }
