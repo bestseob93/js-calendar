@@ -108,6 +108,10 @@ export default class Controller {
     if (endDateToMs <= startDateToMs) {
       window.alert('시작일시는 종료일시보다 이전이어야 합니다')
     }
+
+    this.model.insert(formData, () => {
+      this.view.closeModal()
+    })
     // const yyyymmdd = value.split('T')[0]
     // const result = new Date(yyyymmdd).getTime() // datetimelocal 값 milliseconds로 변환 (end시간과 비교 하기 위함)
   }

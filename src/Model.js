@@ -106,6 +106,10 @@ export default class Model {
     return days
   }
 
+  insert (data, callback) {
+    this.store.insert(data, callback)
+  }
+
   get (name, callback) {
     this.month = moment().clone() // 선택된 날짜 정보를 복사한다.
     this.start = moment().clone()

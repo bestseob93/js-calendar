@@ -112,4 +112,9 @@ export default class View {
     this.$modalContainer.style.display = 'block'
     this.$modal.classList.add('opend')
   }
+
+  closeModal () {
+    this.$modalContainer.style.display = 'none'
+    this.$modal.classList.remove('opend')
+  }
 }
