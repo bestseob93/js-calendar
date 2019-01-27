@@ -48,7 +48,7 @@ export default class Model {
     var datas = [
       {
         id: 1,
-        color: '#fff000',
+        color: '#35c1bb',
         title: '과제 시작하기',
         startDate: '2019-01-23T14:00',
         endDate: '2019-01-30T14:00',
@@ -56,7 +56,7 @@ export default class Model {
       },
       {
         id: 2,
-        color: '#fff111',
+        color: '#f13145',
         title: '다른 일정 보기',
         startDate: '2019-01-23T15:00',
         endDate: '2019-01-24T14:00',
@@ -67,7 +67,7 @@ export default class Model {
         color: '#000',
         title: '면접보기',
         startDate: '2019-01-31T10:00',
-        endDate: '2019-01-31-12:00',
+        endDate: '2019-01-31T12:00',
         memo: '버즈니면접'
       }
     ]
