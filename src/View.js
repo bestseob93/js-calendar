@@ -6,6 +6,7 @@ export default class View {
     console.log('view created')
 
     this.inputDatas = {
+      id: 0,
       title: '',
       bgColor: '',
       startDate: '',
@@ -62,8 +63,8 @@ export default class View {
 
   editTodo (target) {
     const data = JSON.parse(target.dataset.event)
+    this.inputDatas = data
     this.showModal()
-    this.bindEditMode.bind(this).call()
     this.setModalToEditMode()
     this.$title.value = data.title
     this.$startDate.value = data.startDate
@@ -125,19 +126,30 @@ export default class View {
     $on(this.$closeBtn, 'click', handler)
   }
 
+  clearInputs () {
+    this.$title.value = ''
+    this.$startDate.value = ''
+    this.$endDate.value = ''
+    this.$memo.value = ''
+  }
+
   handleChange (e) {
     this.inputDatas = {
       ...this.inputDatas,
       [e.target.name]: e.target.value.trim()
     }
-    console.log(this.inputDatas)
   }
 
   bindOnSubmit (handler) {
     $on(this.$submit, 'click', (e) => {
       const datas = { ...this.inputDatas }
-      console.log(this.inputDatas)
-      console.log(datas)
+      handler(e, datas)
+    })
+  }
+
+  bindOnEditClick (handler) {
+    $on(this.$editBtn, 'click', (e) => {
+      const datas = { ...this.inputDatas }
       handler(e, datas)
     })
   }

@@ -104,6 +104,10 @@ export default class Model {
     }
   }
 
+  update (data, callback) {
+    this.store.update(data, callback)
+  }
+
   get (name, callback) {
     this.start = moment().clone()
     if (name === 'month') {

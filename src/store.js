@@ -98,8 +98,8 @@ export default class Store {
       }
 
       const newItem = {
-        id: index,
-        ...item
+        ...item,
+        id: index
       }
 
       items.push(newItem)
