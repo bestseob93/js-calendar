@@ -76,7 +76,7 @@ export default class Controller {
 
   showAddTodo () {
     console.log('addtodo clicked')
-    this.view.renderAddTodo()
+    this.view.openAddTodoModal()
   }
 
   handleTitleChange (e) {

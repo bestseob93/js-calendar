@@ -107,8 +107,7 @@ export default class View {
     this.$calendar.innerHTML = this.template.show('day')
   }
 
-  renderAddTodo () {
-    console.log('33')
+  openAddTodoModal () {
     this.$modalContainer.style.display = 'block'
     this.$modal.classList.add('opend')
   }
