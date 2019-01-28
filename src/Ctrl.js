@@ -6,6 +6,7 @@ export default class Controller {
 
     this.inputDatas = {
       title: '',
+      bgColor: '',
       startDate: '',
       endDate: '',
       memo: ''
@@ -80,33 +81,36 @@ export default class Controller {
   }
 
   handleTitleChange (e) {
+    console.log(e.target.value)
     this.setInputDatas('title', e.target.value)
   }
 
   handleStartDateChange (e) {
+    console.log(e.target.value)
     this.setInputDatas('startDate', e.target.value)
   }
 
   handleEndDateChange (e) {
+    console.log(e.target.value)
     this.setInputDatas('endDate', e.target.value)
   }
 
   handleMemoChange (e) {
+    console.log(e.target.value)
     this.setInputDatas('memo', e.target.value)
   }
 
   handleSubmit (e) {
     e.preventDefault()
 
-    const formData = {
-      ...this.inputDatas,
-      bgColor: `#${Math.floor(Math.random() * 16777215).toString(16)}` // 백그라운드에 사용할 랜덤 컬러
-    }
+    this.inputDatas.bgColor = `#${Math.floor(Math.random() * 16777215).toString(16)}` // 백그라운드에 사용할 랜덤 컬러
 
-    const startDateToMs = new Date(formData.startDate.split('T')[0]).getTime()
-    const endDateToMs = new Date(formData.endDate.split('T')[0]).getTime()
+    console.log(this.inputDatas)
 
-    if (formData.title === '' || typeof formData.title !== 'string') {
+    const startDateToMs = new Date(this.inputDatas.startDate.split('T')[0]).getTime()
+    const endDateToMs = new Date(this.inputDatas.endDate.split('T')[0]).getTime()
+
+    if (this.inputDatas.title === '' || typeof this.inputDatas.title !== 'string') {
       window.alert('일정의 제목을 입력해주세요')
     }
 
@@ -114,7 +118,7 @@ export default class Controller {
       window.alert('시작일시는 종료일시보다 이전이어야 합니다')
     }
 
-    this.model.insert(formData, () => {
+    this.model.insert(this.inputDatas, () => {
       this.view.closeModal()
       this.showMonth()
     })

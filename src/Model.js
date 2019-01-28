@@ -52,7 +52,6 @@ export default class Model {
       datas = items
     })
 
-    console.log(datas)
     const days = [] // 총 7일의 정보가 들어간다.
     for (let i = 0; i < 7; i++) {
       days.push({
@@ -61,7 +60,6 @@ export default class Model {
         isCurrentMonth: date.month() === month.month(),
         isToday: date.isSame(new Date(), 'day'),
         startEvents: datas.filter(data => {
-          console.log(data)
           return data.startDate.split('T')[0] === date.format('YYYY-MM-DD')
         }),
         endEvents: datas.filter(data => {

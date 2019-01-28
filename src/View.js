@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { qs, qsa, $on } from 'helpers'
+import { qs, $on, $delegate } from 'helpers'
 
 export default class View {
   constructor (template) {
@@ -34,22 +34,20 @@ export default class View {
     this.$submit = qs('.submit__btn')
 
     /* observer */
-    this.calendarObserver = new window.MutationObserver(mutations => {
-      mutations.forEach((mutation) => {
-        const $events = qsa('.calendar__event')
-        const eventArr = Array.from($events)
-
-        eventArr.map(($event) => {
-          $on($event, 'click', () => {
-            this.openAddTodoModal()
-          })
-        })
-      })
+    $delegate(this.$calendar, '.calendar__event', 'click', ({ target }) => {
+      console.log(target)
+      this.editTodo(target)
     })
-    const config = { childList: true }
-
-    this.calendarObserver.observe(this.$calendar, config)
     this.init()
+  }
+
+  editTodo (target) {
+    const data = JSON.parse($event.dataset.event)
+    this.showModal()
+    this.$title.value = data.title
+    this.$startDate.value = data.startDate
+    this.$endDate.value = data.endDate
+    this.$memo.value = data.memo
   }
 
   /**

@@ -29,7 +29,6 @@ export default class Template {
         const days = data[i].days
         view += '<tr>'
         for (let j = 0; j < days.length; j++) {
-          console.log(days[j])
           const id = days[j].date.format('YYYY-MM-DD')
           const isSunday = (days[j].name === '일')
           const isSaturday = (days[j].name === '토')
@@ -55,8 +54,6 @@ export default class Template {
                 </div>`
             }
           }
-
-          console.log(hasEventsDays)
 
           if (isToday) {
             view += `<td class="common__td current-month today${isSunday ? ' su' : ''}${isSaturday ? ' sa' : ''}" data-dateId=${id}>
