@@ -10,6 +10,12 @@ export default class Model {
       weekdaysShort: ['일', '월', '화', '수', '목', '금', '토'],
       weekdaysMin: ['일', '월', '화', '수', '목', '금', '토']
     })
+
+    this.store.findAll((datas) => {
+      console.log(datas)
+    })
+
+    this.month = moment().clone() // 선택된 날짜 정보를 복사한다.
   }
 
   /**
@@ -48,7 +54,7 @@ export default class Model {
     var datas = [
       {
         id: 1,
-        color: '#35c1bb',
+        bgColor: '#35c1bb',
         title: '과제 시작하기',
         startDate: '2019-01-23T14:00',
         endDate: '2019-01-30T14:00',
@@ -56,7 +62,7 @@ export default class Model {
       },
       {
         id: 2,
-        color: '#f13145',
+        bgColor: '#f13145',
         title: '다른 일정 보기',
         startDate: '2019-01-23T15:00',
         endDate: '2019-01-24T14:00',
@@ -64,7 +70,7 @@ export default class Model {
       },
       {
         id: 3,
-        color: '#000',
+        bgColor: '#000',
         title: '면접보기',
         startDate: '2019-01-31T10:00',
         endDate: '2019-01-31T12:00',
@@ -111,7 +117,6 @@ export default class Model {
   }
 
   get (name, callback) {
-    this.month = moment().clone() // 선택된 날짜 정보를 복사한다.
     this.start = moment().clone()
     if (name === 'month') {
       this.start.date(1)

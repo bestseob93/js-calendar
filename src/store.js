@@ -23,6 +23,15 @@ export default class Store {
   }
 
   /**
+   * Find All items
+   * @param {function()} callback called after findAll finished
+   */
+  findAll (callback) {
+    const items = this.getItem()
+    callback(items)
+  }
+
+  /**
    * Find items with properties matching those on query
    * @param {query} query query to match
    * @param {function()} callback called when the query is finished
@@ -81,7 +90,19 @@ export default class Store {
   insert (item, callback) {
     try {
       const items = this.getItem()
-      items.push(item)
+      let index = 0
+      if (items.length < 1) {
+        index = 1
+      } else {
+        index = items[items.length - 1].id + 1
+      }
+
+      const newItem = {
+        id: index,
+        ...item
+      }
+
+      items.push(newItem)
 
       this.setItem(items)
 

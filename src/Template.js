@@ -45,7 +45,7 @@ export default class Template {
           if (events.length > 0) {
             for (let k = 0; k < events.length; k++) {
               const todoEvent = events[k]
-              const eventStyle = `background-color:${todoEvent.color};top:${(k + 1) * 28}px;`
+              const eventStyle = `background-color:${todoEvent.bgColor};top:${(k + 1) * 28}px;`
               hasEventsDays += `
                 <div
                   class="calendar__event"
