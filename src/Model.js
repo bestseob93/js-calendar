@@ -1,4 +1,5 @@
 import moment from 'moment'
+import { compareToSort } from 'helpers'
 
 export default class Model {
   constructor (store) {
@@ -76,7 +77,7 @@ export default class Model {
           if (isStart && isEnd) {
             return true
           }
-        }),
+        }).sort(compareToSort),
         date: date
       })
 
@@ -90,16 +91,15 @@ export default class Model {
   insert (data, callback) {
     data.bgColor = `#${Math.floor(Math.random() * 16777215).toString(16)}` // 백그라운드에 사용할 랜덤 컬러
 
-    console.log(data)
-
     const startDateToMs = new Date(data.startDate.split('T')[0]).getTime()
     const endDateToMs = new Date(data.endDate.split('T')[0]).getTime()
 
     if (data.title === '' || typeof data.title !== 'string') {
       window.alert('일정의 제목을 입력해주세요')
-    } else if (endDateToMs <= startDateToMs) {
+    } else if (endDateToMs < startDateToMs) {
       window.alert('시작일시는 종료일시보다 이전이어야 합니다')
     } else {
+      data.period = endDateToMs - startDateToMs
       this.store.insert(data, callback)
     }
   }

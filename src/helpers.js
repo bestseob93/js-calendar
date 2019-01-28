@@ -26,3 +26,14 @@ export function $delegate (target, selector, type, handler) {
 
   $on(target, type, dispatchEvent, useCapture)
 }
+
+export function compareToSort (a, b) {
+  if (a.period < b.period) {
+    return 1
+  }
+  if (a.period > b.period) {
+    return -1
+  }
+
+  return 0
+}

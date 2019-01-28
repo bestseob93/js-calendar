@@ -11,6 +11,7 @@ export default class View {
       bgColor: '',
       startDate: '',
       endDate: '',
+      period: 0,
       memo: ''
     }
 
