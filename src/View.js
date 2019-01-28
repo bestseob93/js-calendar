@@ -23,6 +23,7 @@ export default class View {
     /* modal */
     this.$modalContainer = qs('.modal__container')
     this.$modal = qs('.modal')
+    this.$modalHeader = qs('.modal .modal__header h3')
     this.$closeBtn = qs('.modal .close')
     console.log(this.$closeBtn)
 
@@ -38,16 +39,24 @@ export default class View {
       console.log(target)
       this.editTodo(target)
     })
+
     this.init()
   }
 
   editTodo (target) {
-    const data = JSON.parse($event.dataset.event)
+    const data = JSON.parse(target.dataset.event)
     this.showModal()
+    this.setModalToEditMode()
     this.$title.value = data.title
     this.$startDate.value = data.startDate
     this.$endDate.value = data.endDate
     this.$memo.value = data.memo
+  }
+
+  setModalToEditMode () {
+    this.$modalHeader.innerHTML = '일정'
+    this.$submit.style.display = 'none'
+    this.$editModeBtns.style.display = 'block'
   }
 
   /**
@@ -130,6 +139,7 @@ export default class View {
   }
 
   showModal () {
+    this.$modalHeader.innerHTML = '일정 추가'
     this.$modalContainer.style.display = 'block'
     this.$modal.classList.add('opend')
   }
