@@ -151,7 +151,15 @@ export default class View {
   bindOnEditClick (handler) {
     $on(this.$editBtn, 'click', (e) => {
       const datas = { ...this.inputDatas }
+
       handler(e, datas)
+    })
+  }
+
+  bindOnDeleteClick (handler) {
+    $on(this.$deleteBtn, 'click', (e) => {
+      const datas = { ...this.inputDatas }
+      handler(e, datas.id)
     })
   }
 
@@ -170,6 +178,7 @@ export default class View {
   showModal () {
     this.$modalHeader.innerHTML = '일정 추가'
     this.$modalContainer.style.display = 'block'
+    this.$submit.style.display = 'block'
     this.$deleteBtn.style.display = 'none'
     this.$editBtn.style.display = 'none'
     this.$modal.classList.add('opend')
@@ -178,5 +187,6 @@ export default class View {
   closeModal () {
     this.$modalContainer.style.display = 'none'
     this.$modal.classList.remove('opend')
+    this.clearInputs()
   }
 }

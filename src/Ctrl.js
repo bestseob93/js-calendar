@@ -20,6 +20,7 @@ export default class Controller {
     view.bindCloseModalBtnClick(this.view.closeModal.bind(this.view))
     view.bindOnSubmit(this.handleSubmit.bind(this))
     view.bindOnEditClick(this.handleEdit.bind(this))
+    view.bindOnDeleteClick(this.handleDelete.bind(this))
     /* end modal events */
 
     this.showMonth()
@@ -59,7 +60,6 @@ export default class Controller {
     e.preventDefault()
     this.model.insert(data, () => {
       this.view.closeModal()
-      this.view.clearInputs()
       this.showMonth()
     })
   }
@@ -68,7 +68,14 @@ export default class Controller {
     e.preventDefault()
     this.model.update(data, () => {
       this.view.closeModal()
-      this.view.clearInputs()
+      this.showMonth()
+    })
+  }
+
+  handleDelete (e, id) {
+    e.preventDefault()
+    this.model.remove(id, () => {
+      this.view.closeModal()
       this.showMonth()
     })
   }
