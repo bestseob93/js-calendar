@@ -100,7 +100,7 @@ export default class Controller {
 
     const formData = {
       ...this.inputDatas,
-      bgColor: Math.floor(Math.random() * 16777215).toString(16) // 백그라운드에 사용할 랜덤 컬러
+      bgColor: `#${Math.floor(Math.random() * 16777215).toString(16)}` // 백그라운드에 사용할 랜덤 컬러
     }
 
     const startDateToMs = new Date(formData.startDate.split('T')[0]).getTime()
@@ -116,6 +116,7 @@ export default class Controller {
 
     this.model.insert(formData, () => {
       this.view.closeModal()
+      this.showMonth()
     })
     // const yyyymmdd = value.split('T')[0]
     // const result = new Date(yyyymmdd).getTime() // datetimelocal 값 milliseconds로 변환 (end시간과 비교 하기 위함)
