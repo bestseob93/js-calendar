@@ -49,6 +49,7 @@ export default class Template {
               hasEventsDays += `
                 <div
                   class="calendar__event"
+                  data-event=${JSON.stringify(todoEvent)}
                   style="${eventStyle}">
                     <span class="event__title">${isStartDay ? todoEvent.title : '&nbsp;'}</span>
                 </div>`

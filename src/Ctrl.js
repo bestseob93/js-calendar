@@ -24,6 +24,7 @@ export default class Controller {
     /* end header events */
 
     /* modal events */
+    view.bindCloseModalBtnClick(this.view.closeModal.bind(this.view))
     view.bindTitleChange(this.handleTitleChange.bind(this))
     view.bindStartDateChange(this.handleStartDateChange.bind(this))
     view.bindEndDateChange(this.handleEndDateChange.bind(this))
@@ -75,8 +76,7 @@ export default class Controller {
   }
 
   showAddTodo () {
-    console.log('addtodo clicked')
-    this.view.openAddTodoModal()
+    this.view.showModal()
   }
 
   handleTitleChange (e) {

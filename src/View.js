@@ -1,13 +1,11 @@
 import moment from 'moment'
-import { qs, $on } from 'helpers'
+import { qs, qsa, $on } from 'helpers'
 
 export default class View {
   constructor (template) {
     console.log('view created')
     this.template = template
     this.$calendar = qs('.calendar__body')
-    this.$modalContainer = qs('.modal__container')
-    this.$modal = qs('.modal')
 
     /* header left */
     this.$today = qs('.header__date-today')
@@ -22,6 +20,12 @@ export default class View {
 
     this.$addTodo = qs('.header__todo-button--add')
 
+    /* modal */
+    this.$modalContainer = qs('.modal__container')
+    this.$modal = qs('.modal')
+    this.$closeBtn = qs('.modal .close')
+    console.log(this.$closeBtn)
+
     this.$title = qs('input[name="title"]')
     this.$startDate = qs('input[name="startDate"]')
     this.$endDate = qs('input[name="endDate"]')
@@ -29,6 +33,22 @@ export default class View {
 
     this.$submit = qs('.submit__btn')
 
+    /* observer */
+    this.calendarObserver = new window.MutationObserver(mutations => {
+      mutations.forEach((mutation) => {
+        const $events = qsa('.calendar__event')
+        const eventArr = Array.from($events)
+
+        eventArr.map(($event) => {
+          $on($event, 'click', () => {
+            this.openAddTodoModal()
+          })
+        })
+      })
+    })
+    const config = { childList: true }
+
+    this.calendarObserver.observe(this.$calendar, config)
     this.init()
   }
 
@@ -75,6 +95,10 @@ export default class View {
     $on(this.$addTodo, 'click', handler)
   }
 
+  bindCloseModalBtnClick (handler) {
+    $on(this.$closeBtn, 'click', handler)
+  }
+
   bindTitleChange (handler) {
     $on(this.$title, 'change', handler)
   }
@@ -107,7 +131,7 @@ export default class View {
     this.$calendar.innerHTML = this.template.show('day')
   }
 
-  openAddTodoModal () {
+  showModal () {
     this.$modalContainer.style.display = 'block'
     this.$modal.classList.add('opend')
   }
