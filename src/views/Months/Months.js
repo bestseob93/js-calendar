@@ -66,8 +66,6 @@ export default class Months {
         </table>
       </div>`
     parentElement.appendChild(body)
-
-    console.log(state)
   }
 
   render () {

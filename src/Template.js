@@ -56,7 +56,6 @@ export default class Template {
             }
           }
 
-          console.log(eventsLength)
           if (isToday) {
             view += `<td class="common__td current-month today${isSunday ? ' su' : ''}${isSaturday ? ' sa' : ''}" data-dateId=${id}>
             <div>${day}</div>${hasEventsDays}</td>`

@@ -1,6 +1,5 @@
 export default class Controller {
   constructor (model, view) {
-    console.log('ctrl created')
     this.model = model
     this.view = view
 
@@ -36,7 +35,6 @@ export default class Controller {
   }
 
   showToday () {
-    console.log('show Today')
     this.model.get('today', this.view.renderMonth.bind(this.view))
   }
 

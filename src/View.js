@@ -3,8 +3,6 @@ import { qs, $on, $delegate } from 'helpers'
 
 export default class View {
   constructor (template) {
-    console.log('view created')
-
     this.inputDatas = {
       id: 0,
       title: '',
@@ -36,7 +34,6 @@ export default class View {
     this.$modal = qs('.modal')
     this.$modalHeader = qs('.modal .modal__header h3')
     this.$closeBtn = qs('.modal .close')
-    console.log(this.$closeBtn)
 
     this.$title = qs('input[name="title"]')
     this.$startDate = qs('input[name="startDate"]')
@@ -49,7 +46,6 @@ export default class View {
 
     /* observer */
     $delegate(this.$calendar, '.calendar__event', 'click', ({ target }) => {
-      console.log(target)
       this.editTodo(target)
     })
 

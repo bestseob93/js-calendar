@@ -20,9 +20,7 @@ export default class Header {
     parentElement.appendChild(header)
 
     const s = document.querySelector('.nav__button--prev')
-    console.log(s)
     s.addEventListener('click', (e) => {
-      console.log('zzz')
       this.state.test = 'bye'
     })
   }
