@@ -41,10 +41,11 @@ export default class Template {
           // 이벤트 가지고 있는 td 소리질러
           let hasEventsDays = ''
           const events = days[j].hasEvents || []
-          if (events.length > 0) {
+          const eventsLength = events.length
+          if (eventsLength > 0) {
             for (let k = 0; k < events.length; k++) {
               const todoEvent = events[k]
-              const eventStyle = `background-color:${todoEvent.bgColor};top:${(k + 1) * 28}px;`
+              const eventStyle = `background-color:${todoEvent.bgColor};top:${((todoEvent.id % 3) + 1) * 28}px;`
               hasEventsDays += `
                 <div
                   class="calendar__event"
@@ -55,14 +56,15 @@ export default class Template {
             }
           }
 
+          console.log(eventsLength)
           if (isToday) {
             view += `<td class="common__td current-month today${isSunday ? ' su' : ''}${isSaturday ? ' sa' : ''}" data-dateId=${id}>
             <div>${day}</div>${hasEventsDays}</td>`
           } else if (isCurrentMonth) {
             view += `<td class="common__td current-month${isSunday ? ' su' : ''}${isSaturday ? ' sa' : ''}" data-dateId=${id}>
-            <div>${day}</div>${hasEventsDays}</td>`
+            <div>${day}${eventsLength > 3 ? `<span style="float:right;">+${eventsLength - 3} more</span>` : ''}</div>${hasEventsDays}</td>`
           } else {
-            view += `<td class="common__td" data-dateId=${id}><div>${day}</div>${hasEventsDays}</td>`
+            view += `<td class="common__td" data-dateId=${id}><div>${day}${eventsLength > 3 ? `<span style="float:right;">+${eventsLength - 3} more</span>` : ''}</div>${hasEventsDays}</td>`
           }
         }
         view += '</tr>'
