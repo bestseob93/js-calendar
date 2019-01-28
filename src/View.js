@@ -4,6 +4,15 @@ import { qs, $on, $delegate } from 'helpers'
 export default class View {
   constructor (template) {
     console.log('view created')
+
+    this.inputDatas = {
+      title: '',
+      bgColor: '',
+      startDate: '',
+      endDate: '',
+      memo: ''
+    }
+
     this.template = template
     this.$calendar = qs('.calendar__body')
 
@@ -33,6 +42,8 @@ export default class View {
     this.$memo = qs('textarea[name="memo"]')
 
     this.$submit = qs('.submit__btn')
+    this.$editBtn = qs('.edit__btn')
+    this.$deleteBtn = qs('.delete__btn')
 
     /* observer */
     $delegate(this.$calendar, '.calendar__event', 'click', ({ target }) => {
@@ -40,12 +51,19 @@ export default class View {
       this.editTodo(target)
     })
 
+    /* input change */
+    $on(this.$title, 'change', this.handleChange.bind(this))
+    $on(this.$startDate, 'change', this.handleChange.bind(this))
+    $on(this.$endDate, 'change', this.handleChange.bind(this))
+    $on(this.$memo, 'change', this.handleChange.bind(this))
+
     this.init()
   }
 
   editTodo (target) {
     const data = JSON.parse(target.dataset.event)
     this.showModal()
+    this.bindEditMode.bind(this).call()
     this.setModalToEditMode()
     this.$title.value = data.title
     this.$startDate.value = data.startDate
@@ -56,7 +74,8 @@ export default class View {
   setModalToEditMode () {
     this.$modalHeader.innerHTML = '일정'
     this.$submit.style.display = 'none'
-    this.$editModeBtns.style.display = 'block'
+    this.$deleteBtn.style.display = 'block'
+    this.$editBtn.style.display = 'block'
   }
 
   /**
@@ -106,24 +125,21 @@ export default class View {
     $on(this.$closeBtn, 'click', handler)
   }
 
-  bindTitleChange (handler) {
-    $on(this.$title, 'change', handler)
-  }
-
-  bindStartDateChange (handler) {
-    $on(this.$startDate, 'change', handler)
-  }
-
-  bindEndDateChange (handler) {
-    $on(this.$endDate, 'change', handler)
-  }
-
-  bindMemoChange (handler) {
-    $on(this.$memo, 'change', handler)
+  handleChange (e) {
+    this.inputDatas = {
+      ...this.inputDatas,
+      [e.target.name]: e.target.value.trim()
+    }
+    console.log(this.inputDatas)
   }
 
   bindOnSubmit (handler) {
-    $on(this.$submit, 'click', handler)
+    $on(this.$submit, 'click', (e) => {
+      const datas = { ...this.inputDatas }
+      console.log(this.inputDatas)
+      console.log(datas)
+      handler(e, datas)
+    })
   }
 
   renderMonth (data) {
@@ -141,6 +157,8 @@ export default class View {
   showModal () {
     this.$modalHeader.innerHTML = '일정 추가'
     this.$modalContainer.style.display = 'block'
+    this.$deleteBtn.style.display = 'none'
+    this.$editBtn.style.display = 'none'
     this.$modal.classList.add('opend')
   }
 

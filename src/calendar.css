@@ -187,7 +187,7 @@ td.sa {
   cursor: pointer;
 }
 
-.modal__footer .delete_btn {
+.modal__footer .delete__btn {
   flex: 1;
   margin-right: 20px;
   height: 80%;
