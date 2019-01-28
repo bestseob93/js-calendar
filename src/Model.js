@@ -11,10 +11,6 @@ export default class Model {
       weekdaysMin: ['일', '월', '화', '수', '목', '금', '토']
     })
 
-    this.store.findAll((datas) => {
-      console.log(datas)
-    })
-
     this.month = moment().clone() // 선택된 날짜 정보를 복사한다.
   }
 
@@ -51,32 +47,12 @@ export default class Model {
    * @param {moment()} month 월
    */
   buildWeek (date, month) {
-    var datas = [
-      {
-        id: 1,
-        bgColor: '#35c1bb',
-        title: '과제 시작하기',
-        startDate: '2019-01-23T14:00',
-        endDate: '2019-01-30T14:00',
-        memo: 'blahblah'
-      },
-      {
-        id: 2,
-        bgColor: '#f13145',
-        title: '다른 일정 보기',
-        startDate: '2019-01-23T15:00',
-        endDate: '2019-01-24T14:00',
-        memo: 'blahblah'
-      },
-      {
-        id: 3,
-        bgColor: '#000',
-        title: '면접보기',
-        startDate: '2019-01-31T10:00',
-        endDate: '2019-01-31T12:00',
-        memo: '버즈니면접'
-      }
-    ]
+    let datas = []
+    this.store.findAll((items) => {
+      datas = items
+    })
+
+    console.log(datas)
     const days = [] // 총 7일의 정보가 들어간다.
     for (let i = 0; i < 7; i++) {
       days.push({
@@ -85,6 +61,7 @@ export default class Model {
         isCurrentMonth: date.month() === month.month(),
         isToday: date.isSame(new Date(), 'day'),
         startEvents: datas.filter(data => {
+          console.log(data)
           return data.startDate.split('T')[0] === date.format('YYYY-MM-DD')
         }),
         endEvents: datas.filter(data => {
