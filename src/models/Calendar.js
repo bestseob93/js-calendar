@@ -122,15 +122,21 @@ export default class Calendar {
     })
 
     console.log(hasTodo)
-    const a = []
-    hasTodo.map(todo => {
-      a.push(parseInt(todo.endDate.split('T')[1].split(':')[0], 10) - parseInt(todo.startDate.split('T')[1].split(':')[0], 10))
-    })
-    console.log(a)
+
     for (let i = 0; i < 24; i++) {
       hours.push({
         number: i,
-        range: a
+        events: hasTodo.filter(data => {
+          const startHour = parseInt(data.startDate.split('T')[1].split(':')[0], 10)
+          const endHour = parseInt(data.endDate.split('T')[1].split(':')[0], 10)
+
+          const isStart = i >= startHour
+          const isEnd = i <= endHour
+
+          if (isStart && isEnd) {
+            return true
+          }
+        })
       })
     }
 
