@@ -47,12 +47,13 @@ export default class Calendar {
           const startOfWeek = new Date(compareDate.days(0).format('YYYY-MM-DD')).getTime()
           const endOfWeek = new Date(compareDate.days(6).format('YYYY-MM-DD')).getTime()
           const startDate = new Date(data.startDate.split('T')[0]).getTime()
-          const endDate = new Date(data.endDate.split('T')[0]).getTime()
+          // const endDate = new Date(data.endDate.split('T')[0]).getTime()
 
-          const isStarDateInWeek = startOfWeek <= startDate && endOfWeek >= startDate
-          const isEndDateInWeek = startOfWeek <= endDate && endOfWeek >= endDate
-          if (isStarDateInWeek || isEndDateInWeek) {
-            return true
+          for (let i = 0; i < 7; i++) {
+            const dayInWeek = startDate + (i * 60 * 60 * 24000)
+            if (dayInWeek >= startOfWeek && endOfWeek >= startOfWeek) {
+              return true
+            }
           }
         }).sort(compareToSort)
       })
