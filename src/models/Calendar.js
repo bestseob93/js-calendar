@@ -1,7 +1,7 @@
 import moment from 'moment'
 import { compareToSort } from 'helpers'
 
-export default class Model {
+export default class Calendar {
   constructor (store) {
     this.store = store
     moment.locale('kr', {
@@ -25,29 +25,29 @@ export default class Model {
   }
 
   /**
-   * 월을 그린다.
+   * 월간을 위한 월을 그린다.
    * @param {moment()} start 시작일
    * @param {moment()} month 월
    */
-  buildMonth (start, month) {
+  buildMonthForMonth (start, month) {
     this.week = []
     const date = start.clone()
     let count = 0
     let isNextMonth = false
 
     while (!isNextMonth) {
-      this.week.push({ days: this.buildWeek(date.clone(), month) })
+      this.week.push({ days: this.buildWeekForMonth(date.clone(), month) })
       date.add(1, 'w')
       isNextMonth = count++ === 5 // 6줄로 렌더링
     }
   }
 
   /**
-   * 주를 그린다.
+   * 월간을 위한 주를 그린다.
    * @param {moment()} date 날짜 객체
    * @param {moment()} month 월
    */
-  buildWeek (date, month) {
+  buildWeekForMonth (date, month) {
     let datas = []
     this.store.findAll((items) => {
       datas = items
@@ -117,21 +117,21 @@ export default class Model {
     if (name === 'month') {
       this.start.date(1)
       this.removeTime(this.start.day(0))
-      this.buildMonth(this.start, this.month)
+      this.buildMonthForMonth(this.start, this.month)
 
       callback(this.week)
     } else if (name === 'prev') {
       const prev = this.month.clone()
       this.removeTime(prev.month(prev.month() - 1).date(1))
       this.month.month(this.month.month() - 1)
-      this.buildMonth(prev, this.month)
+      this.buildMonthForMonth(prev, this.month)
 
       callback(this.week)
     } else if (name === 'next') {
       const next = this.month.clone()
       this.removeTime(next.month(next.month() + 1).date(1))
       this.month.month(this.month.month() + 1)
-      this.buildMonth(next, this.month)
+      this.buildMonthForMonth(next, this.month)
 
       callback(this.week)
     }

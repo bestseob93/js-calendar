@@ -43,7 +43,7 @@ export default class Controller {
   }
 
   showWeek () {
-    this.view.renderWeek()
+    this.model.get('week', this.view.renderWeek.bind(this.view))
   }
 
   showDay () {
