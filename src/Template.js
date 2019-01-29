@@ -11,6 +11,7 @@ export default class Template {
   show (mode, data) {
     let view = ''
     if (data) {
+      console.log(data)
       view += `<table>
       <thead class="table__head">
         <tr>
@@ -24,10 +25,40 @@ export default class Template {
         </tr>
       </thead>
       <tbody class="table__body">`
-      const weeks = data
+      const weeks = [ ...data ]
+      console.time()
       for (let i = 0; i < weeks.length; i++) {
         const days = data[i].days
+        // const weekHtml = [] // 7개 html 스트링 (이벤트 div)
+        // // 데이터를 들어가서
         view += '<tr>'
+
+        const hasEventsDays = ['', '', '', '', '', '', '']
+        for (let n = 0; n < 3; n++) {
+          for (let j = 0; j < days.length; j++) {
+            const a = data[i].hasEventsInWeek[n]
+            console.log(j)
+            if (a) {
+              for (let k = 0; k < days[j].hasEvents.length; k++) {
+                if (a.id === days[j].hasEvents[k].id) {
+                  console.log(a)
+                  const eventStyle = `background-color:${a.bgColor};top:${(n + 1) * 28}px;`
+                  console.log(eventStyle)
+                  hasEventsDays[j] += `
+                    <div
+                      class="calendar__event"
+                      data-event=${JSON.stringify(a)}
+                      style="${eventStyle}">
+                        <span class="event__title">${a.startDate.split('T')[0] === days[j].date.format('YYYY-MM-DD') ? a.title : '&nbsp;'}</span>
+                    </div>`.trim()
+                }
+              }
+            }
+          }
+        }
+
+        console.log(hasEventsDays)
+
         for (let j = 0; j < days.length; j++) {
           const id = days[j].date.format('YYYY-MM-DD')
           const isSunday = (days[j].name === '일')
@@ -35,44 +66,23 @@ export default class Template {
           const day = days[j].number
           const isToday = days[j].isToday
           const isCurrentMonth = days[j].isCurrentMonth
-
-          const isStartDay = days[j].startEvents.length > 0
-
-          // 이벤트 가지고 있는 td 소리질러
-          let hasEventsDays = ''
           const events = days[j].hasEvents || []
           const eventsLength = events.length
-          if (eventsLength > 0) {
-            for (let k = 0; k < events.length; k++) {
-              if (k >= 3) {
-                break
-              }
-              const todoEvent = events[k]
-              const eventStyle = `background-color:${todoEvent.bgColor};top:${(k + 1) * 28}px;`
-              hasEventsDays += `
-                <div
-                  class="calendar__event"
-                  data-event=${JSON.stringify(todoEvent)}
-                  style="${eventStyle}">
-                    <span class="event__title">${isStartDay ? todoEvent.title : '&nbsp;'}</span>
-                </div>`
-            }
-          }
-
           const renderMore = eventsLength > 3 ? `<span style="float:right;">+${eventsLength - 3} more</span>` : ''
-
           if (isToday) {
             view += `<td class="common__td current-month today${isSunday ? ' su' : ''}${isSaturday ? ' sa' : ''}" data-dateId=${id}>
-            <div>${day}${renderMore}</div>${hasEventsDays}</td>`
+            <div>${day}${renderMore}</div>${hasEventsDays[j]}</td>`
           } else if (isCurrentMonth) {
             view += `<td class="common__td current-month${isSunday ? ' su' : ''}${isSaturday ? ' sa' : ''}" data-dateId=${id}>
-            <div>${day}${renderMore}</div>${hasEventsDays}</td>`
+            <div>${day}${renderMore}</div>${hasEventsDays[j]}</td>`
           } else {
-            view += `<td class="common__td" data-dateId=${id}><div>${day}${renderMore}</div>${hasEventsDays}</td>`
+            view += `<td class="common__td" data-dateId=${id}><div>${day}${renderMore}</div>${hasEventsDays[j]}</td>`
           }
         }
+
         view += '</tr>'
       }
+      console.timeEnd()
       view += '</tbody></table>'
     } else if (mode === 'week') {
       view = `<table>

@@ -40,7 +40,22 @@ export default class Calendar {
     let isNextMonth = false
 
     while (!isNextMonth) {
-      this.week.push({ days: this.buildWeekForMonth(date.clone(), month) })
+      this.week.push({
+        days: this.buildWeekForMonth(date.clone(), month),
+        hasEventsInWeek: this.datas.filter(data => {
+          const compareDate = date.clone()
+          const startOfWeek = new Date(compareDate.days(0).format('YYYY-MM-DD')).getTime()
+          const endOfWeek = new Date(compareDate.days(6).format('YYYY-MM-DD')).getTime()
+          const startDate = new Date(data.startDate.split('T')[0]).getTime()
+          const endDate = new Date(data.endDate.split('T')[0]).getTime()
+
+          const isStarDateInWeek = startOfWeek <= startDate && endOfWeek >= startDate
+          const isEndDateInWeek = startOfWeek <= endDate && endOfWeek >= endDate
+          if (isStarDateInWeek || isEndDateInWeek) {
+            return true
+          }
+        }).sort(compareToSort)
+      })
       date.add(1, 'w')
       isNextMonth = count++ === 5 // 6줄로 렌더링
     }
@@ -104,6 +119,9 @@ export default class Calendar {
           const isStart = momentToMs >= new Date(startDate).getTime()
           const isEnd = momentToMs <= new Date(endDate).getTime()
 
+          if (startDate === endDate) {
+            return false
+          }
           if (isStart && isEnd) {
             return true
           }
@@ -122,6 +140,16 @@ export default class Calendar {
     })
 
     console.log(hasTodo)
+
+    const range = []
+    hasTodo.filter(data => {
+      const startHour = parseInt(data.startDate.split('T')[1].split(':')[0], 10)
+      const endHour = parseInt(data.endDate.split('T')[1].split(':')[0], 10)
+
+      range.push(endHour - startHour)
+    })
+
+    console.log(range)
 
     for (let i = 0; i < 24; i++) {
       hours.push({
