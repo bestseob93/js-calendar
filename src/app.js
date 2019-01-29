@@ -1,7 +1,7 @@
 /* eslint no-unused-vars: 0 */
 import Store from './store'
 import Model from './Model'
-import View from './View'
+import View from './views/Month/Month'
 import Template from './Template'
 import Controller from './Ctrl'
 

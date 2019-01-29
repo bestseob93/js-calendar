@@ -44,8 +44,11 @@ export default class Template {
           const eventsLength = events.length
           if (eventsLength > 0) {
             for (let k = 0; k < events.length; k++) {
+              if (k >= 3) {
+                break
+              }
               const todoEvent = events[k]
-              const eventStyle = `background-color:${todoEvent.bgColor};top:${((todoEvent.id % 3) + 1) * 28}px;`
+              const eventStyle = `background-color:${todoEvent.bgColor};top:${(k + 1) * 28}px;`
               hasEventsDays += `
                 <div
                   class="calendar__event"
@@ -56,21 +59,287 @@ export default class Template {
             }
           }
 
+          const renderMore = eventsLength > 3 ? `<span style="float:right;">+${eventsLength - 3} more</span>` : ''
+
           if (isToday) {
             view += `<td class="common__td current-month today${isSunday ? ' su' : ''}${isSaturday ? ' sa' : ''}" data-dateId=${id}>
-            <div>${day}</div>${hasEventsDays}</td>`
+            <div>${day}${renderMore}</div>${hasEventsDays}</td>`
           } else if (isCurrentMonth) {
             view += `<td class="common__td current-month${isSunday ? ' su' : ''}${isSaturday ? ' sa' : ''}" data-dateId=${id}>
-            <div>${day}${eventsLength > 3 ? `<span style="float:right;">+${eventsLength - 3} more</span>` : ''}</div>${hasEventsDays}</td>`
+            <div>${day}${renderMore}</div>${hasEventsDays}</td>`
           } else {
-            view += `<td class="common__td" data-dateId=${id}><div>${day}${eventsLength > 3 ? `<span style="float:right;">+${eventsLength - 3} more</span>` : ''}</div>${hasEventsDays}</td>`
+            view += `<td class="common__td" data-dateId=${id}><div>${day}${renderMore}</div>${hasEventsDays}</td>`
           }
         }
         view += '</tr>'
       }
       view += '</tbody></table>'
     } else if (mode === 'week') {
-      view = '<div>week</div>'
+      view = `<table>
+        <thead class="table__head">
+          <tr>
+            <th rowspan="2"></th>
+            <th>일</th>
+            <th>월</th>
+            <th>화</th>
+            <th>수</th>
+            <th>목</th>
+            <th>금</th>
+            <th>토</th>
+          </tr>
+          <tr>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody class="table__body">
+          <tr>
+            <td>12시</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+          </tr>
+          <tr>
+            <td>1시</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+          </tr>
+          <tr>
+            <td>2시</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+          </tr>
+          <tr>
+            <td>3시</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+          </tr>
+          <tr>
+            <td>4시</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+          </tr>
+          <tr>
+            <td>5시</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+          </tr>
+          <tr>
+            <td>6시</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+          </tr>
+          <tr>
+            <td>7시</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+          </tr>
+          <tr>
+            <td>8시</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+          </tr>
+          <tr>
+            <td>9시</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+          </tr>
+          <tr>
+            <td>10시</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+          </tr>
+          <tr>
+            <td>11시</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+          </tr>
+          <tr>
+            <td>12시</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+          </tr>
+          <tr>
+            <td>1시</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+          </tr>
+          <tr>
+            <td>2시</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+          </tr>
+          <tr>
+            <td>3시</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+          </tr>
+          <tr>
+            <td>4시</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+          </tr>
+          <tr>
+            <td>5시</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+          </tr>
+          <tr>
+            <td>6시</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+          </tr>
+          <tr>
+            <td>7시</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+          </tr>
+          <tr>
+            <td>8시</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+          </tr>
+          <tr>
+            <td>9시</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+          </tr>
+          <tr>
+            <td>10시</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+          </tr>
+          <tr>
+            <td>11시</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+            <td>1&nbsp;</td>
+          </tr>
+        </tbody>
+      </table>`
     } else if (mode === 'day') {
       view = '<div>day</div>'
     }

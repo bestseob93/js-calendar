@@ -91,9 +91,7 @@ export default class Store {
     try {
       const items = this.getItem()
       let index = 0
-      if (items.length < 1) {
-        index = 1
-      } else {
+      if (items.length > 0) {
         index = items[items.length - 1].id + 1
       }
 
