@@ -13,6 +13,10 @@ export default class Calendar {
     })
 
     this.month = moment().clone() // 선택된 날짜 정보를 복사한다.
+    this.datas = []
+    this.store.findAll((items) => {
+      this.datas = items
+    })
   }
 
   /**
@@ -48,11 +52,6 @@ export default class Calendar {
    * @param {moment()} month 월
    */
   buildWeekForMonth (date, month) {
-    let datas = []
-    this.store.findAll((items) => {
-      datas = items
-    })
-
     const days = [] // 총 7일의 정보가 들어간다.
     for (let i = 0; i < 7; i++) {
       days.push({
@@ -60,13 +59,13 @@ export default class Calendar {
         number: date.date(),
         isCurrentMonth: date.month() === month.month(),
         isToday: date.isSame(new Date(), 'day'),
-        startEvents: datas.filter(data => {
+        startEvents: this.datas.filter(data => {
           return data.startDate.split('T')[0] === date.format('YYYY-MM-DD')
         }),
-        endEvents: datas.filter(data => {
+        endEvents: this.datas.filter(data => {
           return data.endDate.split('T')[0] === date.format('YYYY-MM-DD')
         }),
-        hasEvents: datas.filter(data => {
+        hasEvents: this.datas.filter(data => {
           // 현재의 yyyymmss 의 밀리세컨즈가 일정 시작의 yyyymmss 밀리세컨즈와 일정 끝의 yyyymmss 밀리세컨즈의 사이에 있으면 해당 데이터 리턴
           const startDate = data.startDate.split('T')[0]
           const endDate = data.endDate.split('T')[0]
@@ -86,6 +85,56 @@ export default class Calendar {
     }
 
     return days
+  }
+
+  buildWeekForWeek (start, month) {
+    this.days = []
+
+    const date = start.clone()
+
+    for (let i = 0; i < 7; i++) {
+      this.days.push({
+        number: date.date(),
+        isToday: date.isSame(new Date(), 'day'),
+        hours: this.buildHoursForWeek(date.clone(), month),
+        hasDatas: this.datas.filter(data => {
+          const startDate = data.startDate.split('T')[0]
+          const endDate = data.endDate.split('T')[0]
+          const momentToMs = new Date(date.format('YYYY-MM-DD')).getTime()
+          const isStart = momentToMs >= new Date(startDate).getTime()
+          const isEnd = momentToMs <= new Date(endDate).getTime()
+
+          if (isStart && isEnd) {
+            return true
+          }
+        })
+      })
+      date.add(1, 'd')
+    }
+    console.log(this.days)
+  }
+
+  buildHoursForWeek (date, month) {
+    //
+    const hours = []
+    const hasTodo = this.datas.filter(data => {
+      return data.startDate.split('T')[0] === date.format('YYYY-MM-DD') && data.endDate.split('T')[0] === date.format('YYYY-MM-DD')
+    })
+
+    console.log(hasTodo)
+    const a = []
+    hasTodo.map(todo => {
+      a.push(parseInt(todo.endDate.split('T')[1].split(':')[0], 10) - parseInt(todo.startDate.split('T')[1].split(':')[0], 10))
+    })
+    console.log(a)
+    for (let i = 0; i < 24; i++) {
+      hours.push({
+        number: i,
+        range: a
+      })
+    }
+
+    return hours
   }
 
   insert (data, callback) {
@@ -134,6 +183,12 @@ export default class Calendar {
       this.buildMonthForMonth(next, this.month)
 
       callback(this.week)
+    }
+
+    if (name === 'week') {
+      this.start.startOf('week')
+      this.removeTime(this.start.day(0))
+      this.buildWeekForWeek(this.start, this.month)
     }
   }
 }
