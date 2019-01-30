@@ -12,11 +12,12 @@ export default class Calendar {
       weekdaysMin: ['일', '월', '화', '수', '목', '금', '토']
     })
 
-    this.month = moment().clone() // 선택된 날짜 정보를 복사한다.
     this.datas = []
     this.store.findAll((items) => {
       this.datas = items
     })
+
+    this.type = 'month'
   }
 
   /**
@@ -159,6 +160,10 @@ export default class Calendar {
     return hours
   }
 
+  setType (type) {
+    this.type = type
+  }
+
   insert (data, callback) {
     data.bgColor = generateRandomColor()
     const startDateToMs = new Date(data.startDate.split('T')[0]).getTime()
@@ -183,31 +188,18 @@ export default class Calendar {
   }
 
   get (name, callback) {
-    this.start = moment().clone()
+    this.start = moment().clone() // prev, next 에 사용하기 위함
+    this.month = moment().clone()
     this.store.findAll((items) => {
       this.datas = items
     })
-    console.log(name)
+    console.log(this.type)
     if (name === 'month') {
       this.start.date(1)
       this.removeTime(this.start.day(0))
       this.buildMonthForMonth(this.start, this.month)
 
-      callback(this.week)
-    } else if (name === 'prev') {
-      const prev = this.month.clone()
-      this.removeTime(prev.month(prev.month() - 1).date(1))
-      this.month.month(this.month.month() - 1)
-      this.buildMonthForMonth(prev, this.month)
-
-      callback(this.week)
-    } else if (name === 'next') {
-      const next = this.month.clone()
-      this.removeTime(next.month(next.month() + 1).date(1))
-      this.month.month(this.month.month() + 1)
-      this.buildMonthForMonth(next, this.month)
-
-      callback(this.week)
+      callback(name, this.week)
     }
 
     if (name === 'week') {
@@ -215,19 +207,73 @@ export default class Calendar {
       this.removeTime(this.start.day(0))
       this.buildWeekForWeek(this.start, this.month)
 
-      callback(this.days)
+      callback(name, this.days)
     }
 
     if (name === 'day') {
-      const today = moment().clone()
-      const hours = this.buildHoursForWeek(today, this.month)
+      this.todayDate = moment().clone()
+      const hours = this.buildHoursForWeek(this.todayDate, this.month)
 
       const hour = {
-        today,
+        today: this.todayDate,
         hours
       }
 
-      callback(hour)
+      callback(name, hour)
+    }
+  }
+
+  prev (callback) {
+    if (this.type === 'month') {
+      const prev = this.month.clone()
+      this.removeTime(prev.month(prev.month() - 1).date(1))
+      this.month.month(this.month.month() - 1)
+      this.buildMonthForMonth(prev, this.month)
+
+      callback(this.type, this.week)
+    } else if (this.type === 'week') {
+      const prev = this.month.week(this.month.week() - 1)
+      this.removeTime(this.start.day(0))
+      this.buildWeekForWeek(prev, this.month)
+
+      callback(this.type, this.days)
+    } else if (this.type === 'day') {
+      const prev = this.todayDate.day(this.todayDate.day() - 1)
+      const hours = this.buildHoursForWeek(prev, this.month)
+
+      const hour = {
+        today: prev,
+        hours
+      }
+
+      callback(this.type, hour)
+    }
+  }
+
+  next (callback) {
+    if (this.type === 'month') {
+      const next = this.month.clone()
+      this.removeTime(next.month(next.month() + 1).date(1))
+      this.month.month(this.month.month() + 1)
+      this.buildMonthForMonth(next, this.month)
+
+      callback(this.type, this.week)
+    } else if (this.type === 'week') {
+      const next = this.month.week(this.month.week() + 1)
+      this.removeTime(this.start.day(0))
+      this.buildWeekForWeek(next, this.month)
+
+      callback(this.type, this.days)
+    } else if (this.type === 'day') {
+      const next = this.todayDate.day(this.todayDate.day() + 1)
+      const hours = this.buildHoursForWeek(next, this.month)
+
+      const hour = {
+        today: next,
+        hours
+      }
+
+      callback(this.type, hour)
     }
   }
 }

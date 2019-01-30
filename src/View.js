@@ -227,34 +227,6 @@ export default class View {
   }
 
   /**
-   * Render Month when mode is month
-   *
-   * @param {Array} datas Array of datas to display
-   */
-  renderMonth (datas) {
-    console.log(datas)
-    this.$calendar.innerHTML = this.template.show('month', datas)
-  }
-
-  /**
-   * Render Week when mode is week
-   *
-   * @param {Array} datas Array of datas to display
-   */
-  renderWeek (datas) {
-    this.$calendar.innerHTML = this.template.show('week', datas)
-  }
-
-  /**
-   * Render Day when mode is day
-   *
-   * @param {Array} datas Array of datas to display
-   */
-  renderDay (datas) {
-    this.$calendar.innerHTML = this.template.show('day', datas)
-  }
-
-  /**
    * Open the Modal
    *
    * @param {string} type modal type
@@ -296,5 +268,37 @@ export default class View {
     }
 
     this.clearInputs()
+  }
+
+  /**
+   * Render Month when mode is month
+   *
+   * @param {Array} datas Array of datas to display
+   */
+  renderMonth (datas) {
+    console.log(datas)
+    this.$calendar.innerHTML = this.template.show('month', datas)
+  }
+
+  /**
+   * Render Week when mode is week
+   *
+   * @param {Array} datas Array of datas to display
+   */
+  renderWeek (datas) {
+    this.$calendar.innerHTML = this.template.show('week', datas)
+  }
+
+  /**
+   * Render Day when mode is day
+   *
+   * @param {Array} datas Array of datas to display
+   */
+  renderDay (datas) {
+    this.$calendar.innerHTML = this.template.show('day', datas)
+  }
+
+  render (type, datas) {
+    this.$calendar.innerHTML = this.template.show(type, datas)
   }
 }

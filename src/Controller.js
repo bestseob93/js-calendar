@@ -25,27 +25,30 @@ export default class Controller {
 
   // TODO: 네이밍 고민. 버튼은 월간/주간/일간 공유이므로 prev-M, prev-W, prev-D 식의 표현 필요
   showPrev () {
-    this.model.get('prev', this.view.renderMonth.bind(this.view))
+    this.model.prev(this.view.render.bind(this.view))
   }
 
   showNext () {
-    this.model.get('next', this.view.renderMonth.bind(this.view))
+    this.model.next(this.view.render.bind(this.view))
   }
 
   showToday () {
-    this.model.get('today', this.view.renderMonth.bind(this.view))
+    this.model.get('today', this.view.render.bind(this.view))
   }
 
   showMonth () {
-    this.model.get('month', this.view.renderMonth.bind(this.view))
+    this.model.setType('month')
+    this.model.get('month', this.view.render.bind(this.view))
   }
 
   showWeek () {
-    this.model.get('week', this.view.renderWeek.bind(this.view))
+    this.model.setType('week')
+    this.model.get('week', this.view.render.bind(this.view))
   }
 
   showDay () {
-    this.model.get('day', this.view.renderDay.bind(this.view))
+    this.model.setType('day')
+    this.model.get('day', this.view.render.bind(this.view))
   }
 
   showAddTodo () {
