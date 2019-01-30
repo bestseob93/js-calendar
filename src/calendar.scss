@@ -9,17 +9,20 @@ body {
   width: 1000px;
   margin: 0 auto;
   padding: 15px;
-}
 
-.calendar__header {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px 0;
-}
+  .calendar__header {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0;
 
-.calendar__header button {
-  background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+    .button__container { flex: 1 }
+    .button__container.tab { text-align: center }
+    .button__container.add { text-align: right }
+    button {
+      background-color: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+    }
+  }
 }
 
 .header__date-today {
