@@ -99,3 +99,21 @@ export function htmlEscape (s) {
     .replace(/"/g, '&quot;')
     .replace(/\n/g, '<br />')
 }
+
+export function getMsFromDate (date) {
+  return new Date(date).getTime()
+}
+
+export function getYYYYMMDD (date) {
+  return date.split('T')[0]
+}
+
+export function gethhdd (date) {
+  return date.split('T')[1]
+}
+
+export function getDayName (date) {
+  return date.substring(0, 2)
+}
+
+export const MS_OF_DAY = 60 * 60 * 24000

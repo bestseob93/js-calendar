@@ -1,3 +1,11 @@
+import {
+  getMsFromDate,
+  getYYYYMMDD,
+  gethhdd,
+  getDayName,
+  MS_OF_DAY
+} from 'helpers'
+
 export default class Template {
   constructor () {
     console.log('Template created')
@@ -15,7 +23,6 @@ export default class Template {
 
     let view = ''
     if (data && mode === 'month') {
-      console.log(data)
       view += `<table>
       <thead class="table__head">
         <tr>
@@ -30,7 +37,6 @@ export default class Template {
       </thead>
       <tbody class="table__body">`
       const weeks = [ ...data ]
-      console.time()
       for (let i = 0; i < weeks.length; i += 1) {
         const days = data[i].days
         const weekHtml = ['', '', '', '', '', '', ''] // 7개 html 스트링 (이벤트 div)
@@ -38,56 +44,55 @@ export default class Template {
 
         let remain = 0
         let remainEvent
-        let renderCount = [0, 0, 0, 0, 0, 0, 0]
+        let renderCounts = [0, 0, 0, 0, 0, 0, 0]
         for (let n = 0; n < 3; n += 1) {
           for (let k = 0; k < days.length; k += 1) {
-            console.log('remain', remain)
-            console.log('k', k)
             const isSunday = days[k].name === '일'
+            const dateForCompare = days[k].date.format('YYYY-MM-DD')
+
             if (remain === 0) {
               const startData = days[k].hasEvents.filter((data) => {
-                if (isSunday) {
-                  return true
-                }
-                const isStartDay = data.startDate.split('T')[0] === days[k].date.format('YYYY-MM-DD')
-
+                if (isSunday) { return true }
+                const isStartDay = getYYYYMMDD(data.startDate) === dateForCompare
                 return isStartDay
-              })[renderCount[k]]
+              })[renderCounts[k]]
+
               if (startData) {
-                const startDate = new Date(startData.startDate.split('T')[0]).getTime()
-                const endDate = new Date(startData.endDate.split('T')[0]).getTime()
-                const compareDate = new Date(days[k].date.format('YYYY-MM-DD')).getTime()
+                const startYYYMMDD = getYYYYMMDD(startData.startDate)
+                const endYYYYMMDD = getYYYYMMDD(startData.endDate)
+                const startDate = getMsFromDate(startYYYMMDD)
+                const endDate = getMsFromDate(endYYYYMMDD)
+                const compareDate = getMsFromDate(dateForCompare)
+
                 if (startDate !== compareDate) {
-                  remain = ((endDate - compareDate) / (60 * 60 * 24000)) + 1
+                  remain = ((endDate - compareDate) / (MS_OF_DAY)) + 1
                 } else {
-                  remain = (startData.period / (60 * 60 * 24000)) + 1
+                  remain = (startData.period / (MS_OF_DAY)) + 1
                 }
                 remainEvent = startData
-                renderCount[k] += 1
-                // startDatas[0].period = 3
+                renderCounts[k] += 1
               }
             }
 
             if (remain > 0) {
               if (remainEvent) {
                 const eventStyle = `background-color:${remainEvent.bgColor};top:${(n + 1) * 28}px;`
-                const isStartDay = remainEvent.startDate.split('T')[0] === days[k].date.format('YYYY-MM-DD')
-                const isEndDay = remainEvent.endDate.split('T')[0] === days[k].date.format('YYYY-MM-DD')
+                const isStartDay = getYYYYMMDD(remainEvent.startDate) === dateForCompare
+                const isEndDay = getYYYYMMDD(remainEvent.endDate) === dateForCompare
+
                 weekHtml[k] += `<div
                   class="calendar__event ${isStartDay ? 'calendar__event--start' : ''} ${isEndDay ? 'calendar__event--end' : ''}"
                   data-event=${JSON.stringify(remainEvent)}
                   style="${eventStyle}">
-                    <span class="event__title">${isStartDay ? remainEvent.title : '&nbsp;'}</span>
+                    <span class="event__title">${isStartDay ? remainEvent.title : ' '}</span>
                 </div>`.trim()
-                console.log(renderCount)
-                console.log(weekHtml)
               }
-              remain--
+              remain -= 1
             }
           }
           remain = 0
         }
-        console.log(weekHtml)
+
         for (let j = 0; j < days.length; j += 1) {
           const id = days[j].date.format('YYYY-MM-DD')
           const isSunday = (days[j].name === '일')
@@ -99,58 +104,110 @@ export default class Template {
           const events = days[j].hasEvents || []
           const eventsLength = events.length
 
-          const renderMore = eventsLength > 3 ? `<span class="more right" data-events=${JSON.stringify(events)}>+${eventsLength - 3} more</span>` : ''
+          const renderMore = (eventsLength > 3) ? `<span class="more right" data-events=${JSON.stringify(events)}>+${eventsLength - 3} more</span>` : ''
           if (isToday) {
-            view += `<td class="common__td current-month today${isSunday ? ' sun' : ''}${isSaturday ? ' sat' : ''}" data-dateId=${id}>
-            <div>${day}${renderMore}</div>${weekHtml[j]}</td>`
+            view += `
+              <td
+                class="common__td current-month today${isSunday ? ' sun' : ''}${isSaturday ? ' sat' : ''}"
+                data-dateId=${id}>
+                  <div>${day}${renderMore}</div>
+                ${weekHtml[j]}
+              </td>`
           } else if (isCurrentMonth) {
-            view += `<td class="common__td current-month${isSunday ? ' sun' : ''}${isSaturday ? ' sat' : ''}" data-dateId=${id}>
-            <div>${day}${renderMore}</div>${weekHtml[j]}</td>`
+            view += `
+              <td
+                class="common__td current-month${isSunday ? ' sun' : ''}${isSaturday ? ' sat' : ''}"
+                data-dateId=${id}>
+                  <div>${day}${renderMore}</div>
+                ${weekHtml[j]}
+              </td>`
           } else {
-            view += `<td class="common__td" data-dateId=${id}><div>${day}${renderMore}</div>${weekHtml[j]}</td>`
+            view += `
+              <td
+                class="common__td"
+                data-dateId=${id}>
+                  <div>${day}${renderMore}</div>
+                ${weekHtml[j]}
+              </td>`
           }
         }
       }
 
       view += '</tr>'
-      console.timeEnd()
       view += '</tbody></table>'
     } else if (data && mode === 'week') {
-      const hasEventsDays = ['', '', '', '', '', '', '']
+      const weekHtml = ['', '', '', '', '', '', '']
+      let remain = 0
+      let remainEvent
+      let renderCounts = [0, 0, 0, 0, 0, 0, 0]
+      const days = [ ...data ]
       for (let n = 0; n < 3; n += 1) {
-        for (let i = 0; i < data.length; i += 1) {
-          const a = data[i].hasEventsInWeek[n]
-          if (a) {
-            console.log(a)
-            const eventStyle = `background-color:${a.bgColor};top:${(n + 1) * 28}px;`
-            hasEventsDays[i] += `
-              <div
-                class="calendar__event"
-                data-event=${JSON.stringify(a)}
-                style="${eventStyle}">
-                  <span class="event__title">${a.startDate.split('T')[0] === data[i].date.format('YYYY-MM-DD') ? a.title : '&nbsp;'}</span>
-              </div>`.trim()
+        for (let i = 0; i < days.length; i += 1) {
+          const isSunday = getDayName(days[i].date.format('dd')) === '일'
+          const dateForCompare = days[i].date.format('YYYY-MM-DD')
+
+          console.log(days)
+          if (remain === 0) {
+            const startData = days[i].hasEventsInWeek.filter((data) => {
+              if (isSunday) { return true }
+              const isStartDay = getYYYYMMDD(data.startDate) === dateForCompare
+              return isStartDay
+            })[renderCounts[i]]
+
+            if (startData) {
+              console.log(startData)
+              const startYYYMMDD = getYYYYMMDD(startData.startDate)
+              const endYYYYMMDD = getYYYYMMDD(startData.endDate)
+              const startDate = getMsFromDate(startYYYMMDD)
+              const endDate = getMsFromDate(endYYYYMMDD)
+              const compareDate = getMsFromDate(dateForCompare)
+
+              if (startDate !== compareDate) {
+                remain = ((endDate - compareDate) / (MS_OF_DAY)) + 1
+                console.log(remain)
+              } else {
+                remain = (startData.period / (MS_OF_DAY)) + 1
+              }
+              remainEvent = startData
+              renderCounts[i] += 1
+            }
+          }
+
+          if (remain > 0) {
+            if (remainEvent) {
+              const eventStyle = `background-color:${remainEvent.bgColor};top:${(n + 1) * 28}px;`
+              const isStartDay = getYYYYMMDD(remainEvent.startDate) === dateForCompare
+
+              weekHtml[i] += `
+                <div
+                  class="calendar__event"
+                  data-event=${JSON.stringify(remainEvent)}
+                  style="${eventStyle}">
+                    <span class="event__title">${isStartDay ? remainEvent.title : ' '}</span>
+                </div>`.trim()
+            }
+            remain -= 1
           }
         }
+        remain = 0
       }
+
       view += `
         <table>
           <thead class="table__head">
             <tr>
               <th rowspan="2"></th>`
       for (let i = 0; i < data.length; i += 1) {
-        console.log(data[i].hasEventsInWeek)
-        const renderMore = data[i].hasEventsInWeek.length > 3 ? `<span class="more right">+${data[i].hasEventsInWeek.length - 3} more</span>` : ''
+        const renderMore = (data[i].hasEventsInWeek.length > 3) ? `<span class="more right">+${data[i].hasEventsInWeek.length - 3} more</span>` : ''
         const day = data[i].number
-        view += `<th><div>${data[i].date.format('dd').substring(0, 2)}${day}${renderMore}</div></th>`
+        view += `<th><div>${getDayName(data[i].date.format('dd'))}${day}${renderMore}</div></th>`
       }
       view += `<tr>`
       for (let i = 0; i < data.length; i += 1) {
-        view += `<td class="common__td">${hasEventsDays[i]}</td>`
+        view += `<td class="common__td">${weekHtml[i]}</td>`
       }
 
       view += '</tr></thead>'
-      console.log(hasEventsDays)
       view += '<tbody class="table__body">'
 
       for (let i = 0; i < 24; i += 1) {
@@ -168,18 +225,26 @@ export default class Template {
           let hourHtml = ''
           let bgColor = ''
           const addTodayClass = data[j].isToday ? 'today' : ''
-          for (let k = 0; k < data[j].hours[i].events.length; k += 1) {
+          const eventLength = data[j].hours[i].events.length
+          for (let k = 0; k < eventLength; k += 1) {
             const currentHour = data[j].hours[i].number
             const schedule = data[j].hours[i].events[k]
-            const eventsStartTime = schedule.startDate.split('T')[1]
+            const eventsStartTime = gethhdd(schedule.startDate)
             const startHour = parseInt(eventsStartTime.substring(0, 2), 10)
+
             bgColor = schedule.bgColor
+
             if (currentHour === startHour) {
               hourHtml += `<span class="text-white">(${eventsStartTime}) ${schedule.title}</span>`
             }
           }
-          if (data[j].hours[i].events.length > 0) {
-            view += `<td class="common__td ${addTodayClass}" style="background-color:${bgColor}; border:0;">${hourHtml}</td>`
+          if (eventLength > 0) {
+            view += `
+              <td
+                class="common__td ${addTodayClass}"
+                style="background-color:${bgColor}; border:0;">
+                  ${hourHtml}
+              </td>`
           } else {
             view += `<td class="common__td ${addTodayClass}"></td>`
           }
@@ -218,7 +283,7 @@ export default class Template {
         for (let j = 0; j < data.hours[i].events.length; j += 1) {
           const currentHour = i
           const schedule = data.hours[i].events[j]
-          const eventsStartTime = schedule.startDate.split('T')[1]
+          const eventsStartTime = gethhdd(schedule.startDate)
           const startHour = parseInt(eventsStartTime.substring(0, 2), 10)
           bgColor = schedule.bgColor
           if (currentHour === startHour) {
@@ -246,10 +311,15 @@ export default class Template {
       view += '<ul>'
       console.log(data)
       for (let i = 0; i < data.length; i += 1) {
-        console.log(data[i].startDate.split('T')[0])
-        console.log(data[i].endDate.split('T')[0])
-        if (data[i].startDate.split('T')[0] === data[i].endDate.split('T')[0]) {
-          view += `<li class="list-circle" style="color:${data[i].bgColor};"><span>(${data[i].startDate.split('T')[1]}) ${data[i].title}</span></li>`
+        const startDate = getYYYYMMDD(data[i].startDate)
+        const endDate = getYYYYMMDD(data[i].endDate)
+        if (startDate === endDate) {
+          view += `
+            <li
+              class="list-circle"
+              style="color:${data[i].bgColor};">
+                <span>(${gethhdd(data[i].startDate)}) ${data[i].title}</span>
+            </li>`
         } else {
           view += `
           <li class="list-square" style="color:${data[i].bgColor};">
