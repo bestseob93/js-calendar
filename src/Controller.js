@@ -20,7 +20,7 @@ export default class Controller {
     view.bindOnEditClick(this.handleEdit.bind(this))
     view.bindOnDeleteClick(this.handleDelete.bind(this))
 
-    this.showWeek()
+    this.showMonth()
   }
 
   showPrev () {

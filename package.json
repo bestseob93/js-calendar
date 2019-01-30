@@ -1,6 +1,7 @@
 {
   "name": "js-calendar",
   "version": "1.0.0",
+  "author": "이환섭",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
