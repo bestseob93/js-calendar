@@ -51,7 +51,7 @@ export default class Controller {
   }
 
   showAddTodo () {
-    this.view.showModal()
+    this.view.openModal()
   }
 
   handleSubmit (e, data) {

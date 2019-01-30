@@ -16,20 +16,20 @@ export default class View {
     this.template = template
     this.$calendar = qs('.calendar__body')
 
-    /* header left */
+    /* Header left */
     this.$today = qs('.header__date-today')
     this.$prevBtn = qs('.nav__button--prev')
     this.$nextBtn = qs('.nav__button--next')
     this.$todayBtn = qs('.nav__button--today')
 
-    /* header center(tabs) */
+    /* Header center(tabs) */
     this.$monthBtn = qs('[data-mode="Month"]')
     this.$weekBtn = qs('[data-mode="Week"]')
     this.$dayBtn = qs('[data-mode="Day"]')
 
     this.$addTodo = qs('.header__todo-button--add')
 
-    /* modal */
+    /* Modal */
     this.$modalContainer = qs('.modal__container')
     this.$modal = qs('.modal')
     this.$modalHeader = qs('.modal .modal__header h3')
@@ -44,12 +44,12 @@ export default class View {
     this.$editBtn = qs('.edit__btn')
     this.$deleteBtn = qs('.delete__btn')
 
-    /* observer */
+    /* Observer */
     $delegate(this.$calendar, '.calendar__event', 'click', ({ target }) => {
-      this.editTodo(target)
+      this.showEventDetail(target)
     })
 
-    /* input change */
+    /* Bind input change events */
     $on(this.$title, 'change', this.handleChange.bind(this))
     $on(this.$startDate, 'change', this.handleChange.bind(this))
     $on(this.$endDate, 'change', this.handleChange.bind(this))
@@ -58,17 +58,50 @@ export default class View {
     this.init()
   }
 
-  editTodo (target) {
+  /**
+   * Initialize
+   */
+  init () {
+    this.$calendar.innerHTML = this.template.show('month')
+    this.renderTodayDate()
+  }
+
+  /**
+   * Open Modal when Event Clicked
+   *
+   * @param {HTMLElement} target onClicked Elemenet
+   */
+  showEventDetail (target) {
     const data = JSON.parse(target.dataset.event)
+    /**
+     * Set inputDatas from target's dataset attributes
+     */
     this.inputDatas = data
-    this.showModal()
+    this.openModal()
     this.setModalToEditMode()
+
+    /**
+     * Set data values to each input value
+     */
     this.$title.value = data.title
     this.$startDate.value = data.startDate
     this.$endDate.value = data.endDate
     this.$memo.value = data.memo
   }
 
+  /**
+   * Change modal's appearance Footer to Add
+   */
+  setModalToAddMode () {
+    this.$modalHeader.innerHTML = '일정 추가'
+    this.$submit.style.display = 'block'
+    this.$deleteBtn.style.display = 'none'
+    this.$editBtn.style.display = 'none'
+  }
+
+  /**
+   * Change modal's appearance to Edit/Delete
+   */
   setModalToEditMode () {
     this.$modalHeader.innerHTML = '일정'
     this.$submit.style.display = 'none'
@@ -77,20 +110,23 @@ export default class View {
   }
 
   /**
-   * 최초 실행 필요한 로직
+   * Change modal's appearance to More
    */
-  init () {
-    this.$calendar.innerHTML = this.template.show('month')
-    this.renderTodayDate()
+  setModalToMoreMode () {
+    console.log('More Styling')
   }
 
   /**
-   * 오늘 날짜 출력
+   * Display Today Date
+   * example: 2019.01.30
    */
   renderTodayDate () {
     this.$today.innerHTML = moment().format('YYYY.MM.DD')
   }
 
+  /**********
+   * Bind EventListener
+   **********/
   bindPrevBtnClick (handler) {
     $on(this.$prevBtn, 'click', handler)
   }
@@ -123,6 +159,9 @@ export default class View {
     $on(this.$closeBtn, 'click', handler)
   }
 
+  /**
+   * Clear input values
+   */
   clearInputs () {
     this.$title.value = ''
     this.$startDate.value = ''
@@ -130,6 +169,11 @@ export default class View {
     this.$memo.value = ''
   }
 
+  /**
+   * Change inputDatas when on change input
+   *
+   * @param {SyntheticEvent} e
+   */
   handleChange (e) {
     this.inputDatas = {
       ...this.inputDatas,
@@ -137,6 +181,9 @@ export default class View {
     }
   }
 
+  /**
+   * @param {Function} handler Function called on synthetic event.
+   */
   bindOnSubmit (handler) {
     $on(this.$submit, 'click', (e) => {
       const datas = { ...this.inputDatas }
@@ -172,12 +219,9 @@ export default class View {
     this.$calendar.innerHTML = this.template.show('day', data)
   }
 
-  showModal () {
-    this.$modalHeader.innerHTML = '일정 추가'
+  openModal () {
     this.$modalContainer.style.display = 'block'
-    this.$submit.style.display = 'block'
-    this.$deleteBtn.style.display = 'none'
-    this.$editBtn.style.display = 'none'
+    this.setModalToAddMode()
     this.$modal.classList.add('opend')
   }
 
