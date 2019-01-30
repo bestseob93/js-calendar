@@ -1,0 +1,22 @@
+.calendar__event {
+  width: 142px;
+  height: 24px;
+  position: absolute;
+  line-height: 24px;
+  color: $white;
+  cursor: pointer;
+}
+
+.calendar__event--start {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.calendar__event--end {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.event__title {
+  padding-left: 5px;
+}

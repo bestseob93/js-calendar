@@ -41,27 +41,24 @@ export default class Template {
         for (let n = 0; n < 3; n++) {
           for (let j = 0; j < days.length; j++) {
             const a = data[i].hasEventsInWeek[n]
-            console.log(j)
             if (a) {
               for (let k = 0; k < days[j].hasEvents.length; k++) {
                 if (a.id === days[j].hasEvents[k].id) {
-                  console.log(a)
                   const eventStyle = `background-color:${a.bgColor};top:${(n + 1) * 28}px;`
-                  console.log(eventStyle)
+                  const isStartDay = a.startDate.split('T')[0] === days[j].date.format('YYYY-MM-DD')
+                  const isEndDay = a.endDate.split('T')[0] === days[j].date.format('YYYY-MM-DD')
                   hasEventsDays[j] += `
                     <div
-                      class="calendar__event"
+                      class="calendar__event ${isStartDay ? 'calendar__event--start' : ''} ${isEndDay ? 'calendar__event--end' : ''}"
                       data-event=${JSON.stringify(a)}
                       style="${eventStyle}">
-                        <span class="event__title">${a.startDate.split('T')[0] === days[j].date.format('YYYY-MM-DD') ? a.title : '&nbsp;'}</span>
+                        <span class="event__title">${isStartDay ? a.title : '&nbsp;'}</span>
                     </div>`.trim()
                 }
               }
             }
           }
         }
-
-        console.log(hasEventsDays)
 
         for (let j = 0; j < days.length; j++) {
           const id = days[j].date.format('YYYY-MM-DD')
@@ -72,12 +69,12 @@ export default class Template {
           const isCurrentMonth = days[j].isCurrentMonth
           const events = days[j].hasEvents || []
           const eventsLength = events.length
-          const renderMore = eventsLength > 3 ? `<span style="float:right;">+${eventsLength - 3} more</span>` : ''
+          const renderMore = eventsLength > 3 ? `<span class="more right">+${eventsLength - 3} more</span>` : ''
           if (isToday) {
-            view += `<td class="common__td current-month today${isSunday ? ' su' : ''}${isSaturday ? ' sa' : ''}" data-dateId=${id}>
+            view += `<td class="common__td current-month today${isSunday ? ' sun' : ''}${isSaturday ? ' sat' : ''}" data-dateId=${id}>
             <div>${day}${renderMore}</div>${hasEventsDays[j]}</td>`
           } else if (isCurrentMonth) {
-            view += `<td class="common__td current-month${isSunday ? ' su' : ''}${isSaturday ? ' sa' : ''}" data-dateId=${id}>
+            view += `<td class="common__td current-month${isSunday ? ' sun' : ''}${isSaturday ? ' sat' : ''}" data-dateId=${id}>
             <div>${day}${renderMore}</div>${hasEventsDays[j]}</td>`
           } else {
             view += `<td class="common__td" data-dateId=${id}><div>${day}${renderMore}</div>${hasEventsDays[j]}</td>`
@@ -113,7 +110,7 @@ export default class Template {
               <th rowspan="2"></th>`
       for (let i = 0; i < data.length; i++) {
         console.log(data[i].hasEventsInWeek)
-        const renderMore = data[i].hasEventsInWeek.length > 3 ? `<span style="float:right;">+${data[i].hasEventsInWeek.length - 3} more</span>` : ''
+        const renderMore = data[i].hasEventsInWeek.length > 3 ? `<span class="more right">+${data[i].hasEventsInWeek.length - 3} more</span>` : ''
         const day = data[i].number
         view += `<th><div>${data[i].date.format('dd').substring(0, 2)}${day}${renderMore}</div></th>`
       }
@@ -148,7 +145,7 @@ export default class Template {
             const startHour = parseInt(eventsStartTime.substring(0, 2), 10)
             bgColor = schedule.bgColor
             if (currentHour === startHour) {
-              hourHtml += `<span style="color:#fff;">(${eventsStartTime}) ${schedule.title}</span>`
+              hourHtml += `<span class="text-white">(${eventsStartTime}) ${schedule.title}</span>`
             }
           }
           if (data[j].hours[i].events.length > 0) {
@@ -195,7 +192,7 @@ export default class Template {
           const startHour = parseInt(eventsStartTime.substring(0, 2), 10)
           bgColor = schedule.bgColor
           if (currentHour === startHour) {
-            hourHtml += `<span style="color:#fff;">(${eventsStartTime}) ${schedule.title}</span>`
+            hourHtml += `<span class="text-white">(${eventsStartTime}) ${schedule.title}</span>`
           }
         }
         console.log(hourHtml)
