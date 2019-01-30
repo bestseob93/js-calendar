@@ -127,7 +127,7 @@ export default class Calendar {
             return true
           }
         }).sort(compareToSort),
-        date: date
+        date: date.clone()
       })
       date.add(1, 'd')
     }

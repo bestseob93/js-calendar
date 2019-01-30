@@ -89,21 +89,6 @@ export default class Template {
       console.timeEnd()
       view += '</tbody></table>'
     } else if (data && mode === 'week') {
-      console.log(data)
-      view += `
-        <table>
-          <thead class="table__head">
-            <tr>
-              <th rowspan="2"></th>
-              <th>일</th>
-              <th>월</th>
-              <th>화</th>
-              <th>수</th>
-              <th>목</th>
-              <th>금</th>
-              <th>토</th>
-            </tr>`
-      view += `<tr>`
       const hasEventsDays = ['', '', '', '', '', '', '']
       for (let n = 0; n < 3; n++) {
         for (let i = 0; i < data.length; i++) {
@@ -121,7 +106,18 @@ export default class Template {
           }
         }
       }
-
+      view += `
+        <table>
+          <thead class="table__head">
+            <tr>
+              <th rowspan="2"></th>`
+      for (let i = 0; i < data.length; i++) {
+        console.log(data[i].hasEventsInWeek)
+        const renderMore = data[i].hasEventsInWeek.length > 3 ? `<span style="float:right;">+${data[i].hasEventsInWeek.length - 3} more</span>` : ''
+        const day = data[i].number
+        view += `<th><div>${data[i].date.format('dd').substring(0, 2)}${day}${renderMore}</div></th>`
+      }
+      view += `<tr>`
       for (let i = 0; i < data.length; i++) {
         view += `<td class="common__td">${hasEventsDays[i]}</td>`
       }
@@ -144,8 +140,8 @@ export default class Template {
         for (let j = 0; j < data.length; j++) {
           let hourHtml = ''
           let bgColor = ''
+          const addTodayClass = data[j].isToday ? 'today' : ''
           for (let k = 0; k < data[j].hours[i].events.length; k++) {
-            console.log(data[j].hours[i].number)
             const currentHour = data[j].hours[i].number
             const schedule = data[j].hours[i].events[k]
             const eventsStartTime = schedule.startDate.split('T')[1]
@@ -155,7 +151,11 @@ export default class Template {
               hourHtml += `<span style="color:#fff;">(${eventsStartTime}) ${schedule.title}</span>`
             }
           }
-          view += `<td style="background-color:${bgColor};">${hourHtml}</td>`
+          if (data[j].hours[i].events.length > 0) {
+            view += `<td class="common__td ${addTodayClass}" style="background-color:${bgColor}; border:0;">${hourHtml}</td>`
+          } else {
+            view += `<td class="common__td ${addTodayClass}"></td>`
+          }
         }
         view += '</tr>'
       }

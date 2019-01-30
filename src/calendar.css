@@ -57,7 +57,7 @@ td.current-month {
 }
 
 td.today {
-  background-color: #fedb46;
+  background-color: rgba(254, 219, 70, 0.2);
 }
 
 td.su {
