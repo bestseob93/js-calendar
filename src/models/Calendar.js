@@ -113,7 +113,7 @@ export default class Calendar {
         number: date.date(),
         isToday: date.isSame(new Date(), 'day'),
         hours: this.buildHoursForWeek(date.clone(), month),
-        hasDatas: this.datas.filter(data => {
+        hasEventsInWeek: this.datas.filter(data => {
           const startDate = data.startDate.split('T')[0]
           const endDate = data.endDate.split('T')[0]
           const momentToMs = new Date(date.format('YYYY-MM-DD')).getTime()
@@ -126,7 +126,8 @@ export default class Calendar {
           if (isStart && isEnd) {
             return true
           }
-        }).sort(compareToSort)
+        }).sort(compareToSort),
+        date: date
       })
       date.add(1, 'd')
     }

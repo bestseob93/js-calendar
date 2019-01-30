@@ -104,254 +104,62 @@ export default class Template {
               <th>토</th>
             </tr>`
       view += `<tr>`
-      for (let i = 0; i < data.length; i++) {
-        view += `<th>${i}</th>`
+      const hasEventsDays = ['', '', '', '', '', '', '']
+      for (let n = 0; n < 3; n++) {
+        for (let i = 0; i < data.length; i++) {
+          const a = data[i].hasEventsInWeek[n]
+          if (a) {
+            console.log(a)
+            const eventStyle = `background-color:${a.bgColor};top:${(n + 1) * 28}px;`
+            hasEventsDays[i] += `
+              <div
+                class="calendar__event"
+                data-event=${JSON.stringify(a)}
+                style="${eventStyle}">
+                  <span class="event__title">${a.startDate.split('T')[0] === data[i].date.format('YYYY-MM-DD') ? a.title : '&nbsp;'}</span>
+              </div>`.trim()
+          }
+        }
       }
-      view += `
-        </tr>
-        </thead>
-        <tbody class="table__body">
-          <tr>
-            <td>12시</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-          </tr>
-          <tr>
-            <td>1시</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-          </tr>
-          <tr>
-            <td>2시</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-          </tr>
-          <tr>
-            <td>3시</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-          </tr>
-          <tr>
-            <td>4시</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-          </tr>
-          <tr>
-            <td>5시</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-          </tr>
-          <tr>
-            <td>6시</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-          </tr>
-          <tr>
-            <td>7시</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-          </tr>
-          <tr>
-            <td>8시</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-          </tr>
-          <tr>
-            <td>9시</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-          </tr>
-          <tr>
-            <td>10시</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-          </tr>
-          <tr>
-            <td>11시</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-          </tr>
-          <tr>
-            <td>12시</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-          </tr>
-          <tr>
-            <td>1시</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-          </tr>
-          <tr>
-            <td>2시</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-          </tr>
-          <tr>
-            <td>3시</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-          </tr>
-          <tr>
-            <td>4시</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-          </tr>
-          <tr>
-            <td>5시</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-          </tr>
-          <tr>
-            <td>6시</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-          </tr>
-          <tr>
-            <td>7시</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-          </tr>
-          <tr>
-            <td>8시</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-          </tr>
-          <tr>
-            <td>9시</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-          </tr>
-          <tr>
-            <td>10시</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-          </tr>
-          <tr>
-            <td>11시</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-            <td>1&nbsp;</td>
-          </tr>
-        </tbody>
+
+      for (let i = 0; i < data.length; i++) {
+        view += `<td class="common__td">${hasEventsDays[i]}</td>`
+      }
+
+      view += '</tr></thead>'
+      console.log(hasEventsDays)
+      view += '<tbody class="table__body">'
+
+      for (let i = 0; i < 24; i++) {
+        view += '<tr>'
+        let hour = 0
+        if (i === 0) {
+          hour = 12
+        } else if (i > 12) {
+          hour = i % 12
+        } else {
+          hour = i
+        }
+        view += `<td>${hour}시</td>`
+        for (let j = 0; j < data.length; j++) {
+          let hourHtml = ''
+          let bgColor = ''
+          for (let k = 0; k < data[j].hours[i].events.length; k++) {
+            console.log(data[j].hours[i].number)
+            const currentHour = data[j].hours[i].number
+            const schedule = data[j].hours[i].events[k]
+            const eventsStartTime = schedule.startDate.split('T')[1]
+            const startHour = parseInt(eventsStartTime.substring(0, 2), 10)
+            bgColor = schedule.bgColor
+            if (currentHour === startHour) {
+              hourHtml += `<span style="color:#fff;">(${eventsStartTime}) ${schedule.title}</span>`
+            }
+          }
+          view += `<td style="background-color:${bgColor};">${hourHtml}</td>`
+        }
+        view += '</tr>'
+      }
+      view += `</tbody>
       </table>`
     } else if (mode === 'day') {
       view = '<div>day</div>'
