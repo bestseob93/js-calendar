@@ -191,6 +191,9 @@ export default class View {
     })
   }
 
+  /**
+   * @param {Function} handler Function called on synthetic event
+   */
   bindOnEditClick (handler) {
     $on(this.$editBtn, 'click', (e) => {
       const datas = { ...this.inputDatas }
@@ -199,6 +202,9 @@ export default class View {
     })
   }
 
+  /**
+   * @param {Function} handler Function called on synthetic event
+   */
   bindOnDeleteClick (handler) {
     $on(this.$deleteBtn, 'click', (e) => {
       const datas = { ...this.inputDatas }
@@ -206,25 +212,45 @@ export default class View {
     })
   }
 
-  renderWeek (data) {
-    console.log(data)
-    this.$calendar.innerHTML = this.template.show('week', data)
+  /**
+   * Render Month when mode is month
+   *
+   * @param {Array} datas Array of datas to display
+   */
+  renderMonth (datas) {
+    this.$calendar.innerHTML = this.template.show('month', datas)
   }
 
-  renderMonth (data) {
-    this.$calendar.innerHTML = this.template.show('month', data)
+  /**
+   * Render Week when mode is week
+   *
+   * @param {Array} datas Array of datas to display
+   */
+  renderWeek (datas) {
+    this.$calendar.innerHTML = this.template.show('week', datas)
   }
 
-  renderDay (data) {
-    this.$calendar.innerHTML = this.template.show('day', data)
+  /**
+   * Render Day when mode is day
+   *
+   * @param {Array} datas Array of datas to display
+   */
+  renderDay (datas) {
+    this.$calendar.innerHTML = this.template.show('day', datas)
   }
 
+  /**
+   * Open the Modal
+   */
   openModal () {
     this.$modalContainer.style.display = 'block'
     this.setModalToAddMode()
     this.$modal.classList.add('opend')
   }
 
+  /**
+   * Close the Modal
+   */
   closeModal () {
     this.$modalContainer.style.display = 'none'
     this.$modal.classList.remove('opend')
