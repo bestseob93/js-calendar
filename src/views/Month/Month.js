@@ -168,8 +168,8 @@ export default class View {
     this.$calendar.innerHTML = this.template.show('month', data)
   }
 
-  renderDay () {
-    this.$calendar.innerHTML = this.template.show('day')
+  renderDay (data) {
+    this.$calendar.innerHTML = this.template.show('day', data)
   }
 
   showModal () {

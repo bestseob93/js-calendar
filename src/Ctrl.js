@@ -22,7 +22,7 @@ export default class Controller {
     view.bindOnDeleteClick(this.handleDelete.bind(this))
     /* end modal events */
 
-    this.showWeek()
+    this.showDay()
   }
 
   // TODO: 네이밍 고민. 버튼은 월간/주간/일간 공유이므로 prev-M, prev-W, prev-D 식의 표현 필요
@@ -47,7 +47,7 @@ export default class Controller {
   }
 
   showDay () {
-    this.view.renderDay()
+    this.model.get('day', this.view.renderDay.bind(this.view))
   }
 
   showAddTodo () {

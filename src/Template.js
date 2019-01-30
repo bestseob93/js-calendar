@@ -161,8 +161,53 @@ export default class Template {
       }
       view += `</tbody>
       </table>`
-    } else if (mode === 'day') {
-      view = '<div>day</div>'
+    } else if (data && mode === 'day') {
+      console.log(data)
+      view += `
+        <table>
+          <thead class="table__head">
+          <tr>
+            <th rowspan="2"></th>
+            <th>${data.today.format('dd').substring(0, 2)} ${data.today.format('DD')}</th>
+          </tr>
+          <tr>
+            <th>&nbsp;</th>
+          </tr>
+          </thead>
+          <tbody class="table__body">`
+      for (let i = 0; i < data.hours.length; i++) {
+        view += '<tr>'
+        let hour = 0
+        if (i === 0) {
+          hour = 12
+        } else if (i > 12) {
+          hour = i % 12
+        } else {
+          hour = i
+        }
+        view += `<td>${hour}시</td>`
+        let hourHtml = ''
+        let bgColor = ''
+        for (let j = 0; j < data.hours[i].events.length; j++) {
+          const currentHour = i
+          const schedule = data.hours[i].events[j]
+          const eventsStartTime = schedule.startDate.split('T')[1]
+          const startHour = parseInt(eventsStartTime.substring(0, 2), 10)
+          bgColor = schedule.bgColor
+          if (currentHour === startHour) {
+            hourHtml += `<span style="color:#fff;">(${eventsStartTime}) ${schedule.title}</span>`
+          }
+        }
+        console.log(hourHtml)
+        if (data.hours[i].events.length > 0) {
+          view += `<td class="common__td" style="background-color:${bgColor}; border:0;">${hourHtml}</td>`
+          console.log(view)
+        } else {
+          view += `<td class="common__td"></td>`
+        }
+        view += '</tr>'
+      }
+      view += '</tbody></table>'
     }
 
     return view

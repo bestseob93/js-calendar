@@ -228,5 +228,17 @@ export default class Calendar {
 
       callback(this.days)
     }
+
+    if (name === 'day') {
+      const today = moment().clone()
+      const hours = this.buildHoursForWeek(today, this.month)
+
+      const hour = {
+        today,
+        hours
+      }
+
+      callback(hour)
+    }
   }
 }
