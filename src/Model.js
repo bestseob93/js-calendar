@@ -255,7 +255,7 @@ export default class Calendar {
    * @param {Function} callback 콜백함수
    */
   getToday (callback) {
-    this.get(this.type, callback).bind(this)
+    this.get(this.type, callback)
   }
 
   /**
