@@ -233,6 +233,10 @@ export default class Calendar {
     })
   }
 
+  getToday (callback) {
+    this.get(this.type, callback).bind(this)
+  }
+
   get (name, callback) {
     this.start = moment().clone() // prev, next 에 사용하기 위함
     this.month = moment().clone()

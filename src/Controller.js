@@ -33,7 +33,7 @@ export default class Controller {
   }
 
   showToday () {
-    this.model.get('today', this.view.render.bind(this.view))
+    this.model.getToday(this.view.render.bind(this.view))
   }
 
   showMonth () {
