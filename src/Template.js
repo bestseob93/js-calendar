@@ -33,50 +33,86 @@ export default class Template {
       console.time()
       for (let i = 0; i < weeks.length; i += 1) {
         const days = data[i].days
-        // const weekHtml = [] // 7개 html 스트링 (이벤트 div)
-        // // 데이터를 들어가서
+        const weekHtml = ['', '', '', '', '', '', ''] // 7개 html 스트링 (이벤트 div)
         view += '<tr>'
 
+        let remain = 0
+        let remainEvent
+        let renderCount = [0, 0, 0, 0, 0, 0, 0]
+        for (let n = 0; n < 3; n += 1) {
+          for (let k = 0; k < days.length; k += 1) {
+            console.log('remain', remain)
+            console.log('k', k)
+            const isSunday = days[k].name === '일'
+            if (remain === 0) {
+              const startData = days[k].hasEvents.filter((data) => {
+                if (isSunday) {
+                  return true
+                }
+                const isStartDay = data.startDate.split('T')[0] === days[k].date.format('YYYY-MM-DD')
+
+                return isStartDay
+              })[renderCount[k]]
+              if (startData) {
+                const startDate = new Date(startData.startDate.split('T')[0]).getTime()
+                const endDate = new Date(startData.endDate.split('T')[0]).getTime()
+                const compareDate = new Date(days[k].date.format('YYYY-MM-DD')).getTime()
+                if (startDate !== compareDate) {
+                  remain = ((endDate - compareDate) / (60 * 60 * 24000)) + 1
+                } else {
+                  remain = (startData.period / (60 * 60 * 24000)) + 1
+                }
+                remainEvent = startData
+                renderCount[k] += 1
+                // startDatas[0].period = 3
+              }
+            }
+
+            if (remain > 0) {
+              if (remainEvent) {
+                const eventStyle = `background-color:${remainEvent.bgColor};top:${(n + 1) * 28}px;`
+                const isStartDay = remainEvent.startDate.split('T')[0] === days[k].date.format('YYYY-MM-DD')
+                const isEndDay = remainEvent.endDate.split('T')[0] === days[k].date.format('YYYY-MM-DD')
+                weekHtml[k] += `<div
+                  class="calendar__event ${isStartDay ? 'calendar__event--start' : ''} ${isEndDay ? 'calendar__event--end' : ''}"
+                  data-event=${JSON.stringify(remainEvent)}
+                  style="${eventStyle}">
+                    <span class="event__title">${isStartDay ? remainEvent.title : '&nbsp;'}</span>
+                </div>`.trim()
+                console.log(renderCount)
+                console.log(weekHtml)
+              }
+              remain--
+            }
+          }
+          remain = 0
+        }
+        console.log(weekHtml)
         for (let j = 0; j < days.length; j += 1) {
           const id = days[j].date.format('YYYY-MM-DD')
           const isSunday = (days[j].name === '일')
           const isSaturday = (days[j].name === '토')
           const day = days[j].number
           const isToday = days[j].isToday
+
           const isCurrentMonth = days[j].isCurrentMonth
           const events = days[j].hasEvents || []
           const eventsLength = events.length
-          let hasEventsDays = ''
-          for (let k = 0; k < eventsLength; k += 1) {
-            if (k >= 3) {
-              break
-            }
-            const eventStyle = `background-color:${events[k].bgColor};top:${(k + 1) * 28}px;`
-            const isStartDay = events[k].startDate.split('T')[0] === days[j].date.format('YYYY-MM-DD')
-            const isEndDay = events[k].endDate.split('T')[0] === days[j].date.format('YYYY-MM-DD')
-            hasEventsDays += `
-              <div
-                class="calendar__event ${isStartDay ? 'calendar__event--start' : ''} ${isEndDay ? 'calendar__event--end' : ''}"
-                data-event=${JSON.stringify(events[k])}
-                style="${eventStyle}">
-                  <span class="event__title">${isStartDay ? events[k].title : '&nbsp;'}</span>
-              </div>`.trim()
-          }
 
           const renderMore = eventsLength > 3 ? `<span class="more right" data-events=${JSON.stringify(events)}>+${eventsLength - 3} more</span>` : ''
           if (isToday) {
             view += `<td class="common__td current-month today${isSunday ? ' sun' : ''}${isSaturday ? ' sat' : ''}" data-dateId=${id}>
-            <div>${day}${renderMore}</div>${hasEventsDays}</td>`
+            <div>${day}${renderMore}</div>${weekHtml[j]}</td>`
           } else if (isCurrentMonth) {
             view += `<td class="common__td current-month${isSunday ? ' sun' : ''}${isSaturday ? ' sat' : ''}" data-dateId=${id}>
-            <div>${day}${renderMore}</div>${hasEventsDays}</td>`
+            <div>${day}${renderMore}</div>${weekHtml[j]}</td>`
           } else {
-            view += `<td class="common__td" data-dateId=${id}><div>${day}${renderMore}</div>${hasEventsDays}</td>`
+            view += `<td class="common__td" data-dateId=${id}><div>${day}${renderMore}</div>${weekHtml[j]}</td>`
           }
         }
-
-        view += '</tr>'
       }
+
+      view += '</tr>'
       console.timeEnd()
       view += '</tbody></table>'
     } else if (data && mode === 'week') {

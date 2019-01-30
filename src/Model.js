@@ -37,10 +37,52 @@ export default class Calendar {
   buildMonthForMonth (start, month) {
     this.week = []
     const date = start.clone()
+    const testDate = start.clone()
     let count = 0
     let isNextMonth = false
 
-    let i = 0
+    for (let i = 0; i < this.datas.length; i++) {
+      for (let j = 0; j < 6; j++) {
+        const weekRange = []
+        console.log(testDate.startOf('week').format('YYYY-MM-DD'))
+        console.log(testDate.endOf('week').format('YYYY-MM-DD'))
+        const startOfWeek = new Date(testDate.startOf('week').format('YYYY-MM-DD')).getTime()
+        const endOfWeek = new Date(testDate.endOf('week').format('YYYY-MM-DD')).getTime()
+        const startDate = new Date(this.datas[i].startDate.split('T')[0]).getTime()
+        const endDate = new Date(this.datas[i].endDate.split('T')[0]).getTime()
+        const SEVEN = 60 * 60 * 24000 * 7
+        let result = 0
+        let sum = 0
+        console.log(this.datas[i])
+        if (startDate > endOfWeek) {
+          testDate.add(1, 'w')
+          continue
+        }
+
+        if (endDate < startOfWeek) {
+          testDate.add(1, 'w')
+          continue
+        }
+
+        if (startOfWeek <= startDate && endOfWeek >= startDate) {
+          result = (((endOfWeek - startDate) / (60 * 60 * 24000)) + 1)
+          console.log('result', result)
+          weekRange.push(result)
+        }
+        if (endDate - startOfWeek > SEVEN) {
+          result = 7
+          weekRange.push(result)
+          console.log(sum)
+        }
+        if (endDate - startOfWeek < SEVEN && endDate - startOfWeek >= 0) {
+          result = (((endDate - startOfWeek) / (60 * 60 * 24000)) + 1)
+          weekRange.push(result)
+        }
+        testDate.add(1, 'w')
+        console.log(sum)
+      }
+    }
+    let range = []
     while (!isNextMonth) {
       this.week.push({
         days: this.buildWeekForMonth(date.clone(), month),
@@ -51,6 +93,7 @@ export default class Calendar {
           const startDate = new Date(data.startDate.split('T')[0]).getTime()
           const endDate = new Date(data.endDate.split('T')[0]).getTime()
           const SEVEN = 60 * 60 * 24000 * 7
+          let result = 0
           if (startDate > endOfWeek) {
             return false
           }
@@ -60,21 +103,28 @@ export default class Calendar {
           }
 
           if (startOfWeek <= startDate && endOfWeek >= startDate) {
+            result = (((endOfWeek - startDate) / (60 * 60 * 24000)) + 1)
+            range.push(result)
             return true
           }
 
           if (endDate - startOfWeek > SEVEN) {
+            result = 7
+            range.push(result)
             return true
           }
 
           if (endDate - startOfWeek < SEVEN && endDate - startOfWeek >= 0) {
+            result = (((endDate - startOfWeek) / (60 * 60 * 24000)) + 1)
+            range.push(result)
             return true
           }
-        })
+        }).sort(compareToSort)
       })
       date.add(1, 'w')
       isNextMonth = count++ === 5 // 6줄로 렌더링
     }
+    console.log(range)
   }
 
   /**
