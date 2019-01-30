@@ -5,7 +5,7 @@ import View from './views/Month/Month'
 import Template from './Template'
 import Controller from './Ctrl'
 
-import './calendar.scss'
+import 'styles/main.scss'
 
 const store = new Store('js-calendar')
 const model = new Model(store)

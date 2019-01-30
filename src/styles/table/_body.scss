@@ -1,0 +1,36 @@
+.calendar__body {
+  .days__header {
+    height: 30px;
+    border: 1px solid $border-color;
+    padding-top: 5px;
+    padding-left: 5px;
+    vertical-align: top;
+    text-align: left;
+  }
+
+  .common__td {
+    width: 140px;
+    height: 100px;
+    position: relative;
+    border: 1px solid $border-color;
+    padding-top: 5px;
+    vertical-align: top;
+    color: #c3c3c3;
+  }
+
+  .current-month {
+    color: #000;
+  }
+
+  .today {
+    background-color: rgba(254, 219, 70, 0.2);
+  }
+
+  .su {
+    color: rgb(241,49,69);
+  }
+
+  .sa {
+    color: rgb(24,150,234)
+  }
+}

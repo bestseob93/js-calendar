@@ -1,0 +1,24 @@
+#js-calendar {
+  .calendar__header {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0;
+
+    .button__container {
+      flex: 1;
+      button {
+        background-color: #fff;
+        border: 1px solid $border-color;
+      }
+    }
+
+    .button__container.nav {
+      .header__date-today {
+        display: inline-block;
+        font-weight: 700;
+      }
+    }
+    .button__container.tab { text-align: center; }
+    .button__container.add { text-align: right; }
+  }
+}
