@@ -67,6 +67,15 @@ module.exports = {
         ]
       },
       {
+        test: /\.scss$/,
+        use: [
+          // fallback to style-loader in development
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'sass-loader'
+        ]
+      },
+      {
         test: /\.html$/,
         loader: 'raw-loader',
         exclude: paths.appHtml
