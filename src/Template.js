@@ -199,7 +199,6 @@ export default class Template {
         const isSunday = dateForCompare === '일'
         const isSaturday = dateForCompare === '토'
         const renderMore = (data[i].hasEventsInWeek.length > 3) ? `<span class="more right" data-events=${JSON.stringify(data[i].hasEventsInWeek)}>+${data[i].hasEventsInWeek.length - 3} more</span>` : ''
-        console.log(renderMore)
         const day = data[i].number
         view += `
           <th
@@ -262,7 +261,6 @@ export default class Template {
       view += `</tbody>
       </table>`
     } else if (data && mode === 'day') {
-      console.log(data)
       view += `
         <table class="day-type">
           <thead class="table__head">
@@ -293,22 +291,18 @@ export default class Template {
           const currentHour = i
           schedule = data.hours[i].events[j]
           const eventsStartTime = gethhdd(schedule.startDate)
-          console.log(eventsStartTime)
           const startHour = parseInt(eventsStartTime.substring(0, 2), 10)
           bgColor = schedule.bgColor
           if (currentHour === startHour) {
             hourHtml += `<span class="text-white">(${eventsStartTime}) ${schedule.title}</span>`
           }
         }
-        console.log(hourHtml)
         if (data.hours[i].events.length > 0) {
-          console.log(schedule)
           view += `
             <td
               class="common__td calendar__event"
               style="background-color:${bgColor}; border:0;"
               data-event=${JSON.stringify(schedule)}>${hourHtml}</td>`
-          console.log(view)
         } else {
           view += `<td class="common__td"></td>`
         }
@@ -324,7 +318,6 @@ export default class Template {
     try {
       let view = ''
       view += '<ul>'
-      console.log(data)
       for (let i = 0; i < data.length; i += 1) {
         const startDate = getYYYYMMDD(data[i].startDate)
         const endDate = getYYYYMMDD(data[i].endDate)

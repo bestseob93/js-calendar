@@ -130,6 +130,11 @@ export default class Calendar {
     return days
   }
 
+  /**
+   * 타입 주간일 때 필요한 주를 그린다
+   * @param {moment()} start 날짜 객체
+   * @param {moment()} month 월
+   */
   buildWeekForWeek (start, month) {
     this.days = []
 
@@ -139,7 +144,7 @@ export default class Calendar {
       this.days.push({
         number: date.date(),
         isToday: date.isSame(new Date(), 'day'),
-        hours: this.buildHoursForWeek(date.clone(), month),
+        hours: this.buildHoursForWeek(date.clone()),
         hasEventsInWeek: this.datas.filter(data => {
           const startDate = getYYYYMMDD(data.startDate)
           const endDate = getYYYYMMDD(data.endDate)
@@ -158,17 +163,17 @@ export default class Calendar {
       })
       date.add(1, 'd')
     }
-    console.log(this.days)
   }
 
-  buildHoursForWeek (date, month) {
-    //
+  /**
+   * 타입 주간일 때의 시간 출력과 타입 일간일 때의 시간 출력을 위한 함수
+   * @param {moment()} date 날짜 객체
+   */
+  buildHoursForWeek (date) {
     const hours = []
     const hasTodo = this.datas.filter(data => {
       return getYYYYMMDD(data.startDate) === date.format('YYYY-MM-DD') && getYYYYMMDD(data.endDate) === date.format('YYYY-MM-DD')
     })
-
-    console.log(hasTodo)
 
     const range = []
     hasTodo.filter(data => {
@@ -177,8 +182,6 @@ export default class Calendar {
 
       range.push(endHour - startHour)
     })
-
-    console.log(range)
 
     for (let i = 0; i < 24; i++) {
       hours.push({
@@ -200,6 +203,10 @@ export default class Calendar {
     return hours
   }
 
+  /**
+   * 일간/주간/월간 타입 설정
+   * @param {string} type day, week, month
+   */
   setType (type) {
     this.type = type
   }
@@ -262,7 +269,7 @@ export default class Calendar {
 
     if (name === 'day') {
       this.todayDate = moment().clone()
-      const hours = this.buildHoursForWeek(this.todayDate, this.month)
+      const hours = this.buildHoursForWeek(this.todayDate)
 
       const hour = {
         today: this.todayDate,
@@ -289,7 +296,7 @@ export default class Calendar {
       callback(this.type, this.days)
     } else if (this.type === 'day') {
       const prev = this.todayDate.day(this.todayDate.day() - 1)
-      const hours = this.buildHoursForWeek(prev, this.month)
+      const hours = this.buildHoursForWeek(prev)
 
       const hour = {
         today: prev,
@@ -316,7 +323,7 @@ export default class Calendar {
       callback(this.type, this.days)
     } else if (this.type === 'day') {
       const next = this.todayDate.day(this.todayDate.day() + 1)
-      const hours = this.buildHoursForWeek(next, this.month)
+      const hours = this.buildHoursForWeek(next)
 
       const hour = {
         today: next,
