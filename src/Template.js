@@ -40,22 +40,8 @@ export default class Template {
         const hasEventsDays = ['', '', '', '', '', '', '']
         for (let n = 0; n < 3; n++) {
           for (let j = 0; j < days.length; j++) {
-            const a = data[i].hasEventsInWeek[n]
+            const a = days[j].hasEvents[n]
             if (a) {
-              for (let k = 0; k < days[j].hasEvents.length; k++) {
-                if (a.id === days[j].hasEvents[k].id) {
-                  const eventStyle = `background-color:${a.bgColor};top:${(n + 1) * 28}px;`
-                  const isStartDay = a.startDate.split('T')[0] === days[j].date.format('YYYY-MM-DD')
-                  const isEndDay = a.endDate.split('T')[0] === days[j].date.format('YYYY-MM-DD')
-                  hasEventsDays[j] += `
-                    <div
-                      class="calendar__event ${isStartDay ? 'calendar__event--start' : ''} ${isEndDay ? 'calendar__event--end' : ''}"
-                      data-event=${JSON.stringify(a)}
-                      style="${eventStyle}">
-                        <span class="event__title">${isStartDay ? a.title : '&nbsp;'}</span>
-                    </div>`.trim()
-                }
-              }
             }
           }
         }
@@ -69,6 +55,22 @@ export default class Template {
           const isCurrentMonth = days[j].isCurrentMonth
           const events = days[j].hasEvents || []
           const eventsLength = events.length
+          for (let k = 0; k < eventsLength; k++) {
+            if (k >= 3) {
+              break
+            }
+            const eventStyle = `background-color:${events[k].bgColor};top:${(k + 1) * 28}px;`
+            const isStartDay = events[k].startDate.split('T')[0] === days[j].date.format('YYYY-MM-DD')
+            const isEndDay = events[k].endDate.split('T')[0] === days[j].date.format('YYYY-MM-DD')
+            hasEventsDays[j] += `
+              <div
+                class="calendar__event ${isStartDay ? 'calendar__event--start' : ''} ${isEndDay ? 'calendar__event--end' : ''}"
+                data-event=${JSON.stringify(events[k])}
+                style="${eventStyle}">
+                  <span class="event__title">${isStartDay ? events[k].title : '&nbsp;'}</span>
+              </div>`.trim()
+          }
+
           const renderMore = eventsLength > 3 ? `<span class="more right">+${eventsLength - 3} more</span>` : ''
           if (isToday) {
             view += `<td class="common__td current-month today${isSunday ? ' sun' : ''}${isSaturday ? ' sat' : ''}" data-dateId=${id}>

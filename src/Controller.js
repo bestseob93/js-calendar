@@ -58,6 +58,7 @@ export default class Controller {
     e.preventDefault()
     this.model.insert(data, () => {
       this.view.closeModal()
+      console.log('aa')
       this.showMonth()
     })
   }

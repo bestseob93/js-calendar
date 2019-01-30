@@ -67,7 +67,7 @@ export default class View {
   }
 
   /**
-   * Open Modal when Event Clicked
+   * Open modal that contains event detail when element Clicked
    *
    * @param {HTMLElement} target onClicked Elemenet
    */
@@ -87,6 +87,14 @@ export default class View {
     this.$startDate.value = data.startDate
     this.$endDate.value = data.endDate
     this.$memo.value = data.memo
+  }
+
+  /**
+   * Open modal that contains more events list when element Clicked
+   * @param {HTMLElement} target
+   */
+  showMoreEventList (target) {
+    console.log(target)
   }
 
   /**
@@ -159,6 +167,10 @@ export default class View {
     $on(this.$closeBtn, 'click', handler)
   }
 
+  bindMoreBtnClick (handler) {
+    $delegate(this.$calendar, '.more', 'click', handler)
+  }
+
   /**
    * Clear input values
    */
@@ -218,6 +230,7 @@ export default class View {
    * @param {Array} datas Array of datas to display
    */
   renderMonth (datas) {
+    console.log(datas)
     this.$calendar.innerHTML = this.template.show('month', datas)
   }
 
