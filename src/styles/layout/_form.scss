@@ -2,27 +2,28 @@
 .form__input {
   display: flex;
   margin: 15px 0;
-}
 
-.form__input:last-child {
-  height: 100%;
-}
+  &:last-child {
+    height: 100%;
+  }
 
-.form__input span {
-  flex: 0.2;
-  font-size: 18px;
-}
-.form__input input {
-  flex: 1;
-  height: 35px;
-  border: 1px solid $border-color;
-  border-radius: 6px;
-  padding: 0 10px;
-}
+  span {
+    flex: 0.2;
+    font-size: 18px;
+  }
 
-.form__input textarea {
-  flex: 1;
-  resize: none;
-  border: 1px solid $border-color;
-  border-radius: 6px;
+  input {
+    flex: 1;
+    height: 35px;
+    border: 1px solid $border-color;
+    border-radius: 6px;
+    padding: 0 10px;
+  }
+
+  textarea {
+    flex: 1;
+    resize: none;
+    border: 1px solid $border-color;
+    border-radius: 6px;
+  }
 }
