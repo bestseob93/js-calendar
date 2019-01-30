@@ -9,8 +9,12 @@ export default class Template {
    * @param {array} data 월의 배열
    */
   show (mode, data) {
+    if (!data) {
+      return
+    }
+
     let view = ''
-    if (data) {
+    if (data && mode === 'month') {
       console.log(data)
       view += `<table>
       <thead class="table__head">
@@ -84,28 +88,27 @@ export default class Template {
       }
       console.timeEnd()
       view += '</tbody></table>'
-    } else if (mode === 'week') {
-      view = `<table>
-        <thead class="table__head">
-          <tr>
-            <th rowspan="2"></th>
-            <th>일</th>
-            <th>월</th>
-            <th>화</th>
-            <th>수</th>
-            <th>목</th>
-            <th>금</th>
-            <th>토</th>
-          </tr>
-          <tr>
-            <th>&nbsp;</th>
-            <th>&nbsp;</th>
-            <th>&nbsp;</th>
-            <th>&nbsp;</th>
-            <th>&nbsp;</th>
-            <th>&nbsp;</th>
-            <th>&nbsp;</th>
-          </tr>
+    } else if (data && mode === 'week') {
+      console.log(data)
+      view += `
+        <table>
+          <thead class="table__head">
+            <tr>
+              <th rowspan="2"></th>
+              <th>일</th>
+              <th>월</th>
+              <th>화</th>
+              <th>수</th>
+              <th>목</th>
+              <th>금</th>
+              <th>토</th>
+            </tr>`
+      view += `<tr>`
+      for (let i = 0; i < data.length; i++) {
+        view += `<th>${i}</th>`
+      }
+      view += `
+        </tr>
         </thead>
         <tbody class="table__body">
           <tr>

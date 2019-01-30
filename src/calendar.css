@@ -1,6 +1,12 @@
+body {
+  width: 1192px;
+  margin: 0 auto;
+}
+
 #js-calendar {
   min-width: 800px;
   max-width: 1000px;
+  width: 1000px;
   margin: 0 auto;
   padding: 15px;
 }

@@ -37,3 +37,13 @@ export function compareToSort (a, b) {
 
   return 0
 }
+
+export function generateRandomColor () {
+  const color = `#${Math.floor(Math.random() * 16777215).toString(16)}` // 백그라운드에 사용할 랜덤 컬러
+
+  if (color.length < 7) {
+    generateRandomColor()
+  }
+
+  return color
+}

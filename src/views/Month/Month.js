@@ -159,12 +159,13 @@ export default class View {
     })
   }
 
-  renderMonth (data) {
-    this.$calendar.innerHTML = this.template.show('month', data)
+  renderWeek (data) {
+    console.log(data)
+    this.$calendar.innerHTML = this.template.show('week', data)
   }
 
-  renderWeek (data) {
-    this.$calendar.innerHTML = this.template.show('week', data)
+  renderMonth (data) {
+    this.$calendar.innerHTML = this.template.show('month', data)
   }
 
   renderDay () {

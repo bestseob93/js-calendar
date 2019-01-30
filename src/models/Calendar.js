@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { compareToSort } from 'helpers'
+import { compareToSort, generateRandomColor } from 'helpers'
 
 export default class Calendar {
   constructor (store) {
@@ -126,7 +126,7 @@ export default class Calendar {
           if (isStart && isEnd) {
             return true
           }
-        })
+        }).sort(compareToSort)
       })
       date.add(1, 'd')
     }
@@ -160,7 +160,7 @@ export default class Calendar {
           const endHour = parseInt(data.endDate.split('T')[1].split(':')[0], 10)
 
           const isStart = i >= startHour
-          const isEnd = i <= endHour
+          const isEnd = i < endHour
 
           if (isStart && isEnd) {
             return true
@@ -173,8 +173,7 @@ export default class Calendar {
   }
 
   insert (data, callback) {
-    data.bgColor = `#${Math.floor(Math.random() * 16777215).toString(16)}` // 백그라운드에 사용할 랜덤 컬러
-
+    data.bgColor = generateRandomColor()
     const startDateToMs = new Date(data.startDate.split('T')[0]).getTime()
     const endDateToMs = new Date(data.endDate.split('T')[0]).getTime()
 
@@ -198,6 +197,7 @@ export default class Calendar {
 
   get (name, callback) {
     this.start = moment().clone()
+    console.log(name)
     if (name === 'month') {
       this.start.date(1)
       this.removeTime(this.start.day(0))
@@ -224,6 +224,8 @@ export default class Calendar {
       this.start.startOf('week')
       this.removeTime(this.start.day(0))
       this.buildWeekForWeek(this.start, this.month)
+
+      callback(this.days)
     }
   }
 }
