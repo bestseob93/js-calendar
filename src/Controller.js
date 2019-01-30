@@ -57,26 +57,25 @@ export default class Controller {
 
   handleSubmit (e, data) {
     e.preventDefault()
-    this.model.insert(data, () => {
+    this.model.insert(data, (type) => {
       this.view.closeModal()
-      console.log('aa')
-      this.showMonth()
+      this.model.get(type, this.view.render.bind(this.view))
     })
   }
 
   handleEdit (e, data) {
     e.preventDefault()
-    this.model.update(data, () => {
+    this.model.update(data, (type) => {
       this.view.closeModal()
-      this.showMonth()
+      this.model.get(type, this.view.render.bind(this.view))
     })
   }
 
   handleDelete (e, id) {
     e.preventDefault()
-    this.model.remove(id, () => {
+    this.model.remove(id, (type) => {
       this.view.closeModal()
-      this.showMonth()
+      this.model.get(type, this.view.render.bind(this.view))
     })
   }
 }

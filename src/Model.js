@@ -215,16 +215,22 @@ export default class Calendar {
       window.alert('시작일시는 종료일시보다 이전이어야 합니다')
     } else {
       data.period = endDateToMs - startDateToMs
-      this.store.insert(data, callback)
+      this.store.insert(data, () => {
+        callback(this.type)
+      })
     }
   }
 
   update (data, callback) {
-    this.store.update(data, callback)
+    this.store.update(data, () => {
+      callback(this.type)
+    })
   }
 
   remove (id, callback) {
-    this.store.remove({ id }, callback)
+    this.store.remove({ id }, () => {
+      callback(this.type)
+    })
   }
 
   get (name, callback) {

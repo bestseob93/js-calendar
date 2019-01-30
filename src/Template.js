@@ -195,15 +195,22 @@ export default class Template {
             <tr>
               <th rowspan="2"></th>`
       for (let i = 0; i < data.length; i += 1) {
-        console.log(data[i].hasEventsInWeek)
+        const dateForCompare = getDayName(data[i].date.format('dd'))
+        const isSunday = dateForCompare === '일'
+        const isSaturday = dateForCompare === '토'
         const renderMore = (data[i].hasEventsInWeek.length > 3) ? `<span class="more right" data-events=${JSON.stringify(data[i].hasEventsInWeek)}>+${data[i].hasEventsInWeek.length - 3} more</span>` : ''
         console.log(renderMore)
         const day = data[i].number
-        view += `<th><div>${getDayName(data[i].date.format('dd'))}${day}${renderMore}</div></th>`
+        view += `
+          <th
+            class="${isSunday ? 'sun' : isSaturday ? 'sat' : ''} day">
+            <div>${getDayName(data[i].date.format('dd'))} ${day}${renderMore}</div>
+          </th>`
       }
       view += `<tr>`
       for (let i = 0; i < data.length; i += 1) {
-        view += `<td class="common__td">${weekHtml[i]}</td>`
+        const addTodayClass = data[i].isToday ? 'today' : ''
+        view += `<td class="common__td ${addTodayClass}">${weekHtml[i]}</td>`
       }
 
       view += '</tr></thead>'
@@ -225,9 +232,10 @@ export default class Template {
           let bgColor = ''
           const addTodayClass = data[j].isToday ? 'today' : ''
           const eventLength = data[j].hours[i].events.length
+          let schedule
           for (let k = 0; k < eventLength; k += 1) {
             const currentHour = data[j].hours[i].number
-            const schedule = data[j].hours[i].events[k]
+            schedule = data[j].hours[i].events[k]
             const eventsStartTime = gethhdd(schedule.startDate)
             const startHour = parseInt(eventsStartTime.substring(0, 2), 10)
 
@@ -240,8 +248,9 @@ export default class Template {
           if (eventLength > 0) {
             view += `
               <td
-                class="common__td ${addTodayClass}"
-                style="background-color:${bgColor}; border:0;">
+                class="common__td calendar__event ${addTodayClass}"
+                style="background-color:${bgColor}; border:0;"
+                data-event=${JSON.stringify(schedule)}>
                   ${hourHtml}
               </td>`
           } else {
@@ -258,11 +267,11 @@ export default class Template {
         <table class="day-type">
           <thead class="table__head">
           <tr>
-            <th rowspan="2"></th>
-            <th>${getDayName(data.today.format('dd'))} ${data.today.format('DD')}</th>
+            <th class="time-display" rowspan="2"></th>
+            <th class="common__cd day">${getDayName(data.today.format('dd'))} ${data.today.format('DD')}</th>
           </tr>
           <tr>
-            <th>&nbsp;</th>
+            <th class="common__cd"> </th>
           </tr>
           </thead>
           <tbody class="table__body">`
@@ -276,12 +285,13 @@ export default class Template {
         } else {
           hour = i
         }
-        view += `<td>${hour}시</td>`
+        view += `<td class="time-display">${hour}시</td>`
         let hourHtml = ''
         let bgColor = ''
+        let schedule
         for (let j = 0; j < data.hours[i].events.length; j += 1) {
           const currentHour = i
-          const schedule = data.hours[i].events[j]
+          schedule = data.hours[i].events[j]
           const eventsStartTime = gethhdd(schedule.startDate)
           console.log(eventsStartTime)
           const startHour = parseInt(eventsStartTime.substring(0, 2), 10)
@@ -292,7 +302,12 @@ export default class Template {
         }
         console.log(hourHtml)
         if (data.hours[i].events.length > 0) {
-          view += `<td class="common__td" style="background-color:${bgColor}; border:0;">${hourHtml}</td>`
+          console.log(schedule)
+          view += `
+            <td
+              class="common__td calendar__event"
+              style="background-color:${bgColor}; border:0;"
+              data-event=${JSON.stringify(schedule)}>${hourHtml}</td>`
           console.log(view)
         } else {
           view += `<td class="common__td"></td>`

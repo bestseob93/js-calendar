@@ -1,4 +1,10 @@
 .calendar__body {
+  .table__head {
+    .day {
+      text-align: left;
+    }
+  }
+
   .days__header {
     height: 30px;
     border: 1px solid $border-color;
@@ -16,6 +22,31 @@
     padding-top: 5px;
     vertical-align: top;
     color: rgb(195,195,195);
+  }
+
+  .week-type {
+    tbody {
+      .common__td {
+        width: 140px;
+        height: 25px;
+        position: relative;
+        border: 1px solid $border-color;
+        padding-top: 5px;
+        vertical-align: top;
+        color: rgb(195,195,195);
+      }
+    }
+  }
+
+  .day-type {
+    .time-display {
+      width: 10%;
+    }
+
+    .common__td {
+      width: 90%;
+      height: 25px;
+    }
   }
 
   .current-month {
