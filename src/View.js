@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { qs, $on, $delegate, removeAllClassList } from 'helpers'
+import { qs, $on, $delegate } from 'helpers'
 
 export default class View {
   constructor (template) {
@@ -33,6 +33,7 @@ export default class View {
     this.$modalContainer = qs('.modal__container')
     this.$modal = qs('.modal')
     this.$modalHeader = qs('.modal .modal__header h3')
+    this.$modalBody = qs('.modal .modal__body')
     this.$closeBtn = qs('.modal .close')
 
     this.$title = qs('input[name="title"]')
@@ -123,6 +124,10 @@ export default class View {
   setModalToMoreMode (data) {
     this.$modal.classList.add('type-more')
     this.$modalHeader.innerHTML = '일정 리스트'
+    const div = document.createElement('div')
+    div.classList.add('more-events')
+    div.innerHTML = this.template.renderMoreList(data)
+    this.$modalBody.appendChild(div)
   }
 
   /**
@@ -257,8 +262,6 @@ export default class View {
    */
   openModal (type, data) {
     this.$modalContainer.style.display = 'block'
-    removeAllClassList(this.$modal.classList, 'modal')
-    this.$modal.classList.remove('type-edit')
     this.$modal.classList.add('opend')
 
     if (type === 'add') {
@@ -278,6 +281,20 @@ export default class View {
   closeModal () {
     this.$modalContainer.style.display = 'none'
     this.$modal.classList.remove('opend')
+
+    if (this.$modal.classList.contains('type-edit')) {
+      this.$modal.classList.remove('type-edit')
+    }
+
+    if (this.$modal.classList.contains('type-more')) {
+      this.$modalBody.removeChild(qs('.modal__body .more-events'))
+      this.$modal.classList.remove('type-more')
+    }
+
+    if (this.$modal.classList.contains('type-add')) {
+      this.$modal.classList.remove('type-add')
+    }
+
     this.clearInputs()
   }
 }

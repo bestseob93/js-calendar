@@ -31,13 +31,13 @@ export default class Template {
       <tbody class="table__body">`
       const weeks = [ ...data ]
       console.time()
-      for (let i = 0; i < weeks.length; i++) {
+      for (let i = 0; i < weeks.length; i += 1) {
         const days = data[i].days
         // const weekHtml = [] // 7개 html 스트링 (이벤트 div)
         // // 데이터를 들어가서
         view += '<tr>'
 
-        for (let j = 0; j < days.length; j++) {
+        for (let j = 0; j < days.length; j += 1) {
           const id = days[j].date.format('YYYY-MM-DD')
           const isSunday = (days[j].name === '일')
           const isSaturday = (days[j].name === '토')
@@ -47,7 +47,7 @@ export default class Template {
           const events = days[j].hasEvents || []
           const eventsLength = events.length
           let hasEventsDays = ''
-          for (let k = 0; k < eventsLength; k++) {
+          for (let k = 0; k < eventsLength; k += 1) {
             if (k >= 3) {
               break
             }
@@ -81,8 +81,8 @@ export default class Template {
       view += '</tbody></table>'
     } else if (data && mode === 'week') {
       const hasEventsDays = ['', '', '', '', '', '', '']
-      for (let n = 0; n < 3; n++) {
-        for (let i = 0; i < data.length; i++) {
+      for (let n = 0; n < 3; n += 1) {
+        for (let i = 0; i < data.length; i += 1) {
           const a = data[i].hasEventsInWeek[n]
           if (a) {
             console.log(a)
@@ -102,14 +102,14 @@ export default class Template {
           <thead class="table__head">
             <tr>
               <th rowspan="2"></th>`
-      for (let i = 0; i < data.length; i++) {
+      for (let i = 0; i < data.length; i += 1) {
         console.log(data[i].hasEventsInWeek)
         const renderMore = data[i].hasEventsInWeek.length > 3 ? `<span class="more right">+${data[i].hasEventsInWeek.length - 3} more</span>` : ''
         const day = data[i].number
         view += `<th><div>${data[i].date.format('dd').substring(0, 2)}${day}${renderMore}</div></th>`
       }
       view += `<tr>`
-      for (let i = 0; i < data.length; i++) {
+      for (let i = 0; i < data.length; i += 1) {
         view += `<td class="common__td">${hasEventsDays[i]}</td>`
       }
 
@@ -117,7 +117,7 @@ export default class Template {
       console.log(hasEventsDays)
       view += '<tbody class="table__body">'
 
-      for (let i = 0; i < 24; i++) {
+      for (let i = 0; i < 24; i += 1) {
         view += '<tr>'
         let hour = 0
         if (i === 0) {
@@ -128,11 +128,11 @@ export default class Template {
           hour = i
         }
         view += `<td>${hour}시</td>`
-        for (let j = 0; j < data.length; j++) {
+        for (let j = 0; j < data.length; j += 1) {
           let hourHtml = ''
           let bgColor = ''
           const addTodayClass = data[j].isToday ? 'today' : ''
-          for (let k = 0; k < data[j].hours[i].events.length; k++) {
+          for (let k = 0; k < data[j].hours[i].events.length; k += 1) {
             const currentHour = data[j].hours[i].number
             const schedule = data[j].hours[i].events[k]
             const eventsStartTime = schedule.startDate.split('T')[1]
@@ -166,7 +166,7 @@ export default class Template {
           </tr>
           </thead>
           <tbody class="table__body">`
-      for (let i = 0; i < data.hours.length; i++) {
+      for (let i = 0; i < data.hours.length; i += 1) {
         view += '<tr>'
         let hour = 0
         if (i === 0) {
@@ -179,7 +179,7 @@ export default class Template {
         view += `<td>${hour}시</td>`
         let hourHtml = ''
         let bgColor = ''
-        for (let j = 0; j < data.hours[i].events.length; j++) {
+        for (let j = 0; j < data.hours[i].events.length; j += 1) {
           const currentHour = i
           const schedule = data.hours[i].events[j]
           const eventsStartTime = schedule.startDate.split('T')[1]
@@ -202,5 +202,31 @@ export default class Template {
     }
 
     return view
+  }
+
+  renderMoreList (data) {
+    try {
+      let view = ''
+      view += '<ul>'
+      console.log(data)
+      for (let i = 0; i < data.length; i += 1) {
+        console.log(data[i].startDate.split('T')[0])
+        console.log(data[i].endDate.split('T')[0])
+        if (data[i].startDate.split('T')[0] === data[i].endDate.split('T')[0]) {
+          view += `<li class="list-circle" style="color:${data[i].bgColor};"><span>(${data[i].startDate.split('T')[1]}) ${data[i].title}</span></li>`
+        } else {
+          view += `
+          <li class="list-square" style="color:${data[i].bgColor};">
+            ${data[i].title}
+          </li>`
+        }
+      }
+
+      view += '</ul>'
+
+      return view
+    } catch (e) {
+      if (e) return 'err'
+    }
   }
 }

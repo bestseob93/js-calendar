@@ -35,10 +35,18 @@
     .edit__btn { display: none; }
     .delete__btn { display: none; }
   }
+
   .modal.opend.type-edit {
     .submit__btn { display: none; }
     .edit__btn { display: block; }
     .delete__btn { display: block; }
+  }
+
+  .modal.opend.type-more {
+    .form__input { display: none; }
+    .modal__footer { display: none; }
+
+    .list-square { list-style-type: square; }
   }
 
   .modal__header {

@@ -99,16 +99,3 @@ export function htmlEscape (s) {
     .replace(/"/g, '&quot;')
     .replace(/\n/g, '<br />')
 }
-
-export function removeAllClassList (classList, except) {
-  try {
-    while (classList.length > 0) {
-      if (classList[0] === except) {
-        break
-      }
-      classList.remove(this.$modal.classList.item(0))
-    }
-  } catch (e) {
-    if (e) throw e
-  }
-}

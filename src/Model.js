@@ -55,7 +55,7 @@ export default class Calendar {
    */
   buildWeekForMonth (date, month) {
     const days = [] // 총 7일의 정보가 들어간다.
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 7; i += 1) {
       days.push({
         name: date.format('dd').substring(0, 2),
         number: date.date(),
