@@ -7,6 +7,12 @@
   cursor: pointer;
 }
 
+.week-type {
+  .calendar__event {
+    width: 125px;
+  }
+}
+
 .calendar__event--start {
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;

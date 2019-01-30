@@ -3,7 +3,8 @@
 html, body {
   max-width: 1342px;
   width: 1342px;
-  margin: 0 auto;
+  overflow: scroll;
+  margin: 0;
 }
 
 #js-calendar {

@@ -20,7 +20,7 @@ export default class Controller {
     view.bindOnEditClick(this.handleEdit.bind(this))
     view.bindOnDeleteClick(this.handleDelete.bind(this))
 
-    this.showMonth()
+    this.showWeek()
   }
 
   // TODO: 네이밍 고민. 버튼은 월간/주간/일간 공유이므로 prev-M, prev-W, prev-D 식의 표현 필요

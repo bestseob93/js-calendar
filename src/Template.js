@@ -23,7 +23,7 @@ export default class Template {
 
     let view = ''
     if (data && mode === 'month') {
-      view += `<table>
+      view += `<table class="month-type">
       <thead class="table__head">
         <tr>
           <th class="days__header">일</th>
@@ -146,7 +146,6 @@ export default class Template {
           const isSunday = getDayName(days[i].date.format('dd')) === '일'
           const dateForCompare = days[i].date.format('YYYY-MM-DD')
 
-          console.log(days)
           if (remain === 0) {
             const startData = days[i].hasEventsInWeek.filter((data) => {
               if (isSunday) { return true }
@@ -155,7 +154,6 @@ export default class Template {
             })[renderCounts[i]]
 
             if (startData) {
-              console.log(startData)
               const startYYYMMDD = getYYYYMMDD(startData.startDate)
               const endYYYYMMDD = getYYYYMMDD(startData.endDate)
               const startDate = getMsFromDate(startYYYMMDD)
@@ -164,7 +162,6 @@ export default class Template {
 
               if (startDate !== compareDate) {
                 remain = ((endDate - compareDate) / (MS_OF_DAY)) + 1
-                console.log(remain)
               } else {
                 remain = (startData.period / (MS_OF_DAY)) + 1
               }
@@ -193,12 +190,14 @@ export default class Template {
       }
 
       view += `
-        <table>
+        <table class="week-type">
           <thead class="table__head">
             <tr>
               <th rowspan="2"></th>`
       for (let i = 0; i < data.length; i += 1) {
-        const renderMore = (data[i].hasEventsInWeek.length > 3) ? `<span class="more right">+${data[i].hasEventsInWeek.length - 3} more</span>` : ''
+        console.log(data[i].hasEventsInWeek)
+        const renderMore = (data[i].hasEventsInWeek.length > 3) ? `<span class="more right" data-events=${JSON.stringify(data[i].hasEventsInWeek)}>+${data[i].hasEventsInWeek.length - 3} more</span>` : ''
+        console.log(renderMore)
         const day = data[i].number
         view += `<th><div>${getDayName(data[i].date.format('dd'))}${day}${renderMore}</div></th>`
       }
@@ -256,11 +255,11 @@ export default class Template {
     } else if (data && mode === 'day') {
       console.log(data)
       view += `
-        <table>
+        <table class="day-type">
           <thead class="table__head">
           <tr>
             <th rowspan="2"></th>
-            <th>${data.today.format('dd').substring(0, 2)} ${data.today.format('DD')}</th>
+            <th>${getDayName(data.today.format('dd'))} ${data.today.format('DD')}</th>
           </tr>
           <tr>
             <th>&nbsp;</th>
@@ -284,6 +283,7 @@ export default class Template {
           const currentHour = i
           const schedule = data.hours[i].events[j]
           const eventsStartTime = gethhdd(schedule.startDate)
+          console.log(eventsStartTime)
           const startHour = parseInt(eventsStartTime.substring(0, 2), 10)
           bgColor = schedule.bgColor
           if (currentHour === startHour) {

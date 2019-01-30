@@ -100,8 +100,8 @@ export function htmlEscape (s) {
     .replace(/\n/g, '<br />')
 }
 
-export function getMsFromDate (date) {
-  return new Date(date).getTime()
+export function getMsFromDate (YYYYMMDD) {
+  return new Date(YYYYMMDD).getTime()
 }
 
 export function getYYYYMMDD (date) {

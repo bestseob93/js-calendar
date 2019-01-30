@@ -1,5 +1,13 @@
 import moment from 'moment'
-import { compareToSort, generateRandomColor } from 'helpers'
+import {
+  compareToSort,
+  generateRandomColor,
+  getMsFromDate,
+  getYYYYMMDD,
+  gethhdd,
+  getDayName,
+  MS_OF_DAY
+} from 'helpers'
 
 export default class Calendar {
   constructor (store) {
@@ -37,63 +45,21 @@ export default class Calendar {
   buildMonthForMonth (start, month) {
     this.week = []
     const date = start.clone()
-    const testDate = start.clone()
     let count = 0
     let isNextMonth = false
 
-    for (let i = 0; i < this.datas.length; i++) {
-      for (let j = 0; j < 6; j++) {
-        const weekRange = []
-        console.log(testDate.startOf('week').format('YYYY-MM-DD'))
-        console.log(testDate.endOf('week').format('YYYY-MM-DD'))
-        const startOfWeek = new Date(testDate.startOf('week').format('YYYY-MM-DD')).getTime()
-        const endOfWeek = new Date(testDate.endOf('week').format('YYYY-MM-DD')).getTime()
-        const startDate = new Date(this.datas[i].startDate.split('T')[0]).getTime()
-        const endDate = new Date(this.datas[i].endDate.split('T')[0]).getTime()
-        const SEVEN = 60 * 60 * 24000 * 7
-        let result = 0
-        let sum = 0
-        console.log(this.datas[i])
-        if (startDate > endOfWeek) {
-          testDate.add(1, 'w')
-          continue
-        }
-
-        if (endDate < startOfWeek) {
-          testDate.add(1, 'w')
-          continue
-        }
-
-        if (startOfWeek <= startDate && endOfWeek >= startDate) {
-          result = (((endOfWeek - startDate) / (60 * 60 * 24000)) + 1)
-          console.log('result', result)
-          weekRange.push(result)
-        }
-        if (endDate - startOfWeek > SEVEN) {
-          result = 7
-          weekRange.push(result)
-          console.log(sum)
-        }
-        if (endDate - startOfWeek < SEVEN && endDate - startOfWeek >= 0) {
-          result = (((endDate - startOfWeek) / (60 * 60 * 24000)) + 1)
-          weekRange.push(result)
-        }
-        testDate.add(1, 'w')
-        console.log(sum)
-      }
-    }
-    let range = []
     while (!isNextMonth) {
       this.week.push({
         days: this.buildWeekForMonth(date.clone(), month),
         hasEventsInWeek: this.datas.filter(data => {
           const newDate = date.clone()
-          const startOfWeek = new Date(newDate.startOf('week').format('YYYY-MM-DD')).getTime()
-          const endOfWeek = new Date(newDate.endOf('week').format('YYYY-MM-DD')).getTime()
-          const startDate = new Date(data.startDate.split('T')[0]).getTime()
-          const endDate = new Date(data.endDate.split('T')[0]).getTime()
-          const SEVEN = 60 * 60 * 24000 * 7
+          const startOfWeek = getMsFromDate(newDate.startOf('week').format('YYYY-MM-DD'))
+          const endOfWeek = getMsFromDate(newDate.endOf('week').format('YYYY-MM-DD'))
+          const startDate = getMsFromDate(getYYYYMMDD(data.startDate))
+          const endDate = getMsFromDate(getYYYYMMDD(data.endDate))
+          const SEVEN = MS_OF_DAY * 7
           let result = 0
+          console.log(result)
           if (startDate > endOfWeek) {
             return false
           }
@@ -103,20 +69,17 @@ export default class Calendar {
           }
 
           if (startOfWeek <= startDate && endOfWeek >= startDate) {
-            result = (((endOfWeek - startDate) / (60 * 60 * 24000)) + 1)
-            range.push(result)
+            result = (((endOfWeek - startDate) / (MS_OF_DAY)) + 1)
             return true
           }
 
           if (endDate - startOfWeek > SEVEN) {
             result = 7
-            range.push(result)
             return true
           }
 
           if (endDate - startOfWeek < SEVEN && endDate - startOfWeek >= 0) {
-            result = (((endDate - startOfWeek) / (60 * 60 * 24000)) + 1)
-            range.push(result)
+            result = (((endDate - startOfWeek) / (MS_OF_DAY)) + 1)
             return true
           }
         }).sort(compareToSort)
@@ -124,7 +87,6 @@ export default class Calendar {
       date.add(1, 'w')
       isNextMonth = count++ === 5 // 6줄로 렌더링
     }
-    console.log(range)
   }
 
   /**
@@ -136,23 +98,23 @@ export default class Calendar {
     const days = [] // 총 7일의 정보가 들어간다.
     for (let i = 0; i < 7; i += 1) {
       days.push({
-        name: date.format('dd').substring(0, 2),
+        name: getDayName(date.format('dd')),
         number: date.date(),
         isCurrentMonth: date.month() === month.month(),
         isToday: date.isSame(new Date(), 'day'),
         startEvents: this.datas.filter(data => {
-          return data.startDate.split('T')[0] === date.format('YYYY-MM-DD')
+          return getYYYYMMDD(data.startDate) === date.format('YYYY-MM-DD')
         }),
         endEvents: this.datas.filter(data => {
-          return data.endDate.split('T')[0] === date.format('YYYY-MM-DD')
+          return getYYYYMMDD(data.endDate) === date.format('YYYY-MM-DD')
         }),
         hasEvents: this.datas.filter(data => {
           // 현재의 yyyymmss 의 밀리세컨즈가 일정 시작의 yyyymmss 밀리세컨즈와 일정 끝의 yyyymmss 밀리세컨즈의 사이에 있으면 해당 데이터 리턴
-          const startDate = data.startDate.split('T')[0]
-          const endDate = data.endDate.split('T')[0]
-          const momentToMs = new Date(date.format('YYYY-MM-DD')).getTime()
-          const isStart = momentToMs >= new Date(startDate).getTime()
-          const isEnd = momentToMs <= new Date(endDate).getTime()
+          const startDate = getYYYYMMDD(data.startDate)
+          const endDate = getYYYYMMDD(data.endDate)
+          const momentToMs = getMsFromDate(date.format('YYYY-MM-DD'))
+          const isStart = momentToMs >= getMsFromDate(startDate)
+          const isEnd = momentToMs <= getMsFromDate(endDate)
 
           if (isStart && isEnd) {
             return true
@@ -179,11 +141,11 @@ export default class Calendar {
         isToday: date.isSame(new Date(), 'day'),
         hours: this.buildHoursForWeek(date.clone(), month),
         hasEventsInWeek: this.datas.filter(data => {
-          const startDate = data.startDate.split('T')[0]
-          const endDate = data.endDate.split('T')[0]
-          const momentToMs = new Date(date.format('YYYY-MM-DD')).getTime()
-          const isStart = momentToMs >= new Date(startDate).getTime()
-          const isEnd = momentToMs <= new Date(endDate).getTime()
+          const startDate = getYYYYMMDD(data.startDate)
+          const endDate = getYYYYMMDD(data.endDate)
+          const momentToMs = getMsFromDate(date.format('YYYY-MM-DD'))
+          const isStart = momentToMs >= getMsFromDate(startDate)
+          const isEnd = momentToMs <= getMsFromDate(endDate)
 
           if (startDate === endDate) {
             return false
@@ -203,15 +165,15 @@ export default class Calendar {
     //
     const hours = []
     const hasTodo = this.datas.filter(data => {
-      return data.startDate.split('T')[0] === date.format('YYYY-MM-DD') && data.endDate.split('T')[0] === date.format('YYYY-MM-DD')
+      return getYYYYMMDD(data.startDate) === date.format('YYYY-MM-DD') && getYYYYMMDD(data.endDate) === date.format('YYYY-MM-DD')
     })
 
     console.log(hasTodo)
 
     const range = []
     hasTodo.filter(data => {
-      const startHour = parseInt(data.startDate.split('T')[1].split(':')[0], 10)
-      const endHour = parseInt(data.endDate.split('T')[1].split(':')[0], 10)
+      const startHour = parseInt(gethhdd(data.startDate).split(':')[0], 10)
+      const endHour = parseInt(gethhdd(data.endDate).split(':')[0], 10)
 
       range.push(endHour - startHour)
     })
@@ -222,8 +184,8 @@ export default class Calendar {
       hours.push({
         number: i,
         events: hasTodo.filter(data => {
-          const startHour = parseInt(data.startDate.split('T')[1].split(':')[0], 10)
-          const endHour = parseInt(data.endDate.split('T')[1].split(':')[0], 10)
+          const startHour = parseInt(gethhdd(data.startDate).split(':')[0], 10)
+          const endHour = parseInt(gethhdd(data.endDate).split(':')[0], 10)
 
           const isStart = i >= startHour
           const isEnd = i < endHour
@@ -244,8 +206,8 @@ export default class Calendar {
 
   insert (data, callback) {
     data.bgColor = generateRandomColor()
-    const startDateToMs = new Date(data.startDate.split('T')[0]).getTime()
-    const endDateToMs = new Date(data.endDate.split('T')[0]).getTime()
+    const startDateToMs = getMsFromDate(getYYYYMMDD(data.startDate))
+    const endDateToMs = getMsFromDate(getYYYYMMDD(data.endDate))
 
     if (data.title === '' || typeof data.title !== 'string') {
       window.alert('일정의 제목을 입력해주세요')
