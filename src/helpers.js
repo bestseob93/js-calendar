@@ -38,6 +38,10 @@ export function compareToSort (a, b) {
   return 0
 }
 
+/**
+ * generate Random hex
+ * @return {string} example: #ffffff
+ */
 export function generateRandomColor () {
   const color = `#${Math.floor(Math.random() * 16777215).toString(16)}` // 백그라운드에 사용할 랜덤 컬러
 
@@ -46,4 +50,17 @@ export function generateRandomColor () {
   }
 
   return color
+}
+
+/**
+ * escape html
+ * @param {string} s plain html
+ */
+export function htmlEscape (s) {
+  return (s + '').replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/'/g, '&#039;')
+    .replace(/"/g, '&quot;')
+    .replace(/\n/g, '<br />')
 }
