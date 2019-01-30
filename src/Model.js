@@ -58,8 +58,6 @@ export default class Calendar {
           const startDate = getMsFromDate(getYYYYMMDD(data.startDate))
           const endDate = getMsFromDate(getYYYYMMDD(data.endDate))
           const SEVEN = MS_OF_DAY * 7
-          let result = 0
-          console.log(result)
           if (startDate > endOfWeek) {
             return false
           }
@@ -69,17 +67,14 @@ export default class Calendar {
           }
 
           if (startOfWeek <= startDate && endOfWeek >= startDate) {
-            result = (((endOfWeek - startDate) / (MS_OF_DAY)) + 1)
             return true
           }
 
           if (endDate - startOfWeek > SEVEN) {
-            result = 7
             return true
           }
 
           if (endDate - startOfWeek < SEVEN && endDate - startOfWeek >= 0) {
-            result = (((endDate - startOfWeek) / (MS_OF_DAY)) + 1)
             return true
           }
         }).sort(compareToSort)
@@ -211,6 +206,11 @@ export default class Calendar {
     this.type = type
   }
 
+  /**
+   * 스토어에 데이터 저장
+   * @param {object} data { id: number, title: string, startDate: date, endDate: date, memo: string, bgColor?: string }
+   * @param {Function} callback 콜백 함수
+   */
   insert (data, callback) {
     data.bgColor = generateRandomColor()
     const startDateToMs = getMsFromDate(getYYYYMMDD(data.startDate))
@@ -228,22 +228,41 @@ export default class Calendar {
     }
   }
 
+  /**
+   * 스토어에서 데이터 업데이트
+   * @param {object} data { id: number, title: string, startDate: date, endDate: date, memo: string, bgColor?: string }
+   * @param {Function} callback 콜백 함수
+   */
   update (data, callback) {
     this.store.update(data, () => {
       callback(this.type)
     })
   }
 
+  /**
+   * 스토어에서 데이터 삭제
+   * @param {number} id data id
+   * @param {Function} callback 콜백 함수
+   */
   remove (id, callback) {
     this.store.remove({ id }, () => {
       callback(this.type)
     })
   }
 
+  /**
+   * 오늘 달력으로 가는 함수
+   * @param {Function} callback 콜백함수
+   */
   getToday (callback) {
     this.get(this.type, callback).bind(this)
   }
 
+  /**
+   * 조건에 따른 데이터 불러오기
+   * @param {string} name name = type
+   * @param {Function} callback 콜백 함수
+   */
   get (name, callback) {
     this.start = moment().clone() // prev, next 에 사용하기 위함
     this.month = moment().clone()
@@ -280,6 +299,10 @@ export default class Calendar {
     }
   }
 
+  /**
+   * 이전 달력 상태 불러오기
+   * @param {Function} callback 콜백 함수
+   */
   prev (callback) {
     if (this.type === 'month') {
       const prev = this.month.clone()
@@ -307,6 +330,10 @@ export default class Calendar {
     }
   }
 
+  /**
+   * 다음 달력 상태 불러오기
+   * @param {Function} callback 콜백 함수
+   */
   next (callback) {
     if (this.type === 'month') {
       const next = this.month.clone()
