@@ -40,9 +40,37 @@ export default class Calendar {
     let count = 0
     let isNextMonth = false
 
+    let i = 0
     while (!isNextMonth) {
       this.week.push({
-        days: this.buildWeekForMonth(date.clone(), month)
+        days: this.buildWeekForMonth(date.clone(), month),
+        hasEventsInWeek: this.datas.filter(data => {
+          const newDate = date.clone()
+          const startOfWeek = new Date(newDate.startOf('week').format('YYYY-MM-DD')).getTime()
+          const endOfWeek = new Date(newDate.endOf('week').format('YYYY-MM-DD')).getTime()
+          const startDate = new Date(data.startDate.split('T')[0]).getTime()
+          const endDate = new Date(data.endDate.split('T')[0]).getTime()
+          const SEVEN = 60 * 60 * 24000 * 7
+          if (startDate > endOfWeek) {
+            return false
+          }
+
+          if (endDate < startOfWeek) {
+            return false
+          }
+
+          if (startOfWeek <= startDate && endOfWeek >= startDate) {
+            return true
+          }
+
+          if (endDate - startOfWeek > SEVEN) {
+            return true
+          }
+
+          if (endDate - startOfWeek < SEVEN && endDate - startOfWeek >= 0) {
+            return true
+          }
+        })
       })
       date.add(1, 'w')
       isNextMonth = count++ === 5 // 6줄로 렌더링
@@ -95,7 +123,7 @@ export default class Calendar {
 
     const date = start.clone()
 
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 7; i += 1) {
       this.days.push({
         number: date.date(),
         isToday: date.isSame(new Date(), 'day'),
@@ -193,7 +221,7 @@ export default class Calendar {
     this.store.findAll((items) => {
       this.datas = items
     })
-    console.log(this.type)
+
     if (name === 'month') {
       this.start.date(1)
       this.removeTime(this.start.day(0))
@@ -233,7 +261,7 @@ export default class Calendar {
       callback(this.type, this.week)
     } else if (this.type === 'week') {
       const prev = this.month.week(this.month.week() - 1)
-      this.removeTime(this.start.day(0))
+      this.removeTime(prev.date(this.month.date()))
       this.buildWeekForWeek(prev, this.month)
 
       callback(this.type, this.days)
@@ -260,7 +288,7 @@ export default class Calendar {
       callback(this.type, this.week)
     } else if (this.type === 'week') {
       const next = this.month.week(this.month.week() + 1)
-      this.removeTime(this.start.day(0))
+      this.removeTime(next.date(this.month.date()))
       this.buildWeekForWeek(next, this.month)
 
       callback(this.type, this.days)
