@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { qs, $on, $delegate } from 'helpers'
+import { qs, $on, $delegate, removeAllClassList } from 'helpers'
 
 export default class View {
   constructor (template) {
@@ -48,6 +48,9 @@ export default class View {
     $delegate(this.$calendar, '.calendar__event', 'click', ({ target }) => {
       this.showEventDetail(target)
     })
+    $delegate(this.$calendar, '.more', 'click', ({ target }) => {
+      this.showMoreEventList(target)
+    })
 
     /* Bind input change events */
     $on(this.$title, 'change', this.handleChange.bind(this))
@@ -77,8 +80,7 @@ export default class View {
      * Set inputDatas from target's dataset attributes
      */
     this.inputDatas = data
-    this.openModal()
-    this.setModalToEditMode()
+    this.openModal('detail')
 
     /**
      * Set data values to each input value
@@ -94,34 +96,33 @@ export default class View {
    * @param {HTMLElement} target
    */
   showMoreEventList (target) {
-    console.log(target)
+    const data = JSON.parse(target.dataset.events)
+
+    this.openModal('more', data)
   }
 
   /**
    * Change modal's appearance Footer to Add
    */
   setModalToAddMode () {
+    this.$modal.classList.add('type-add')
     this.$modalHeader.innerHTML = '일정 추가'
-    this.$submit.style.display = 'block'
-    this.$deleteBtn.style.display = 'none'
-    this.$editBtn.style.display = 'none'
   }
 
   /**
    * Change modal's appearance to Edit/Delete
    */
   setModalToEditMode () {
+    this.$modal.classList.add('type-edit')
     this.$modalHeader.innerHTML = '일정'
-    this.$submit.style.display = 'none'
-    this.$deleteBtn.style.display = 'block'
-    this.$editBtn.style.display = 'block'
   }
 
   /**
    * Change modal's appearance to More
    */
-  setModalToMoreMode () {
-    console.log('More Styling')
+  setModalToMoreMode (data) {
+    this.$modal.classList.add('type-more')
+    this.$modalHeader.innerHTML = '일정 리스트'
   }
 
   /**
@@ -165,10 +166,6 @@ export default class View {
 
   bindCloseModalBtnClick (handler) {
     $on(this.$closeBtn, 'click', handler)
-  }
-
-  bindMoreBtnClick (handler) {
-    $delegate(this.$calendar, '.more', 'click', handler)
   }
 
   /**
@@ -254,11 +251,25 @@ export default class View {
 
   /**
    * Open the Modal
+   *
+   * @param {string} type modal type
+   * @param {array} data day's datas
    */
-  openModal () {
+  openModal (type, data) {
     this.$modalContainer.style.display = 'block'
-    this.setModalToAddMode()
+    removeAllClassList(this.$modal.classList, 'modal')
+    this.$modal.classList.remove('type-edit')
     this.$modal.classList.add('opend')
+
+    if (type === 'add') {
+      this.setModalToAddMode()
+    } else if (type === 'detail') {
+      this.setModalToEditMode()
+    } else if (type === 'more') {
+      if (data) {
+        this.setModalToMoreMode(data)
+      }
+    }
   }
 
   /**

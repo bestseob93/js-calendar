@@ -37,15 +37,6 @@ export default class Template {
         // // 데이터를 들어가서
         view += '<tr>'
 
-        const hasEventsDays = ['', '', '', '', '', '', '']
-        for (let n = 0; n < 3; n++) {
-          for (let j = 0; j < days.length; j++) {
-            const a = days[j].hasEvents[n]
-            if (a) {
-            }
-          }
-        }
-
         for (let j = 0; j < days.length; j++) {
           const id = days[j].date.format('YYYY-MM-DD')
           const isSunday = (days[j].name === '일')
@@ -55,6 +46,7 @@ export default class Template {
           const isCurrentMonth = days[j].isCurrentMonth
           const events = days[j].hasEvents || []
           const eventsLength = events.length
+          let hasEventsDays = ''
           for (let k = 0; k < eventsLength; k++) {
             if (k >= 3) {
               break
@@ -62,7 +54,7 @@ export default class Template {
             const eventStyle = `background-color:${events[k].bgColor};top:${(k + 1) * 28}px;`
             const isStartDay = events[k].startDate.split('T')[0] === days[j].date.format('YYYY-MM-DD')
             const isEndDay = events[k].endDate.split('T')[0] === days[j].date.format('YYYY-MM-DD')
-            hasEventsDays[j] += `
+            hasEventsDays += `
               <div
                 class="calendar__event ${isStartDay ? 'calendar__event--start' : ''} ${isEndDay ? 'calendar__event--end' : ''}"
                 data-event=${JSON.stringify(events[k])}
@@ -71,15 +63,15 @@ export default class Template {
               </div>`.trim()
           }
 
-          const renderMore = eventsLength > 3 ? `<span class="more right">+${eventsLength - 3} more</span>` : ''
+          const renderMore = eventsLength > 3 ? `<span class="more right" data-events=${JSON.stringify(events)}>+${eventsLength - 3} more</span>` : ''
           if (isToday) {
             view += `<td class="common__td current-month today${isSunday ? ' sun' : ''}${isSaturday ? ' sat' : ''}" data-dateId=${id}>
-            <div>${day}${renderMore}</div>${hasEventsDays[j]}</td>`
+            <div>${day}${renderMore}</div>${hasEventsDays}</td>`
           } else if (isCurrentMonth) {
             view += `<td class="common__td current-month${isSunday ? ' sun' : ''}${isSaturday ? ' sat' : ''}" data-dateId=${id}>
-            <div>${day}${renderMore}</div>${hasEventsDays[j]}</td>`
+            <div>${day}${renderMore}</div>${hasEventsDays}</td>`
           } else {
-            view += `<td class="common__td" data-dateId=${id}><div>${day}${renderMore}</div>${hasEventsDays[j]}</td>`
+            view += `<td class="common__td" data-dateId=${id}><div>${day}${renderMore}</div>${hasEventsDays}</td>`
           }
         }
 

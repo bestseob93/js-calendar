@@ -13,14 +13,12 @@ export default class Controller {
     view.bindDayBtnClick(this.showDay.bind(this))
 
     view.bindAddTodoBtnClick(this.showAddTodo.bind(this))
-    /* end header events */
 
     /* modal events */
     view.bindCloseModalBtnClick(this.view.closeModal.bind(this.view))
     view.bindOnSubmit(this.handleSubmit.bind(this))
     view.bindOnEditClick(this.handleEdit.bind(this))
     view.bindOnDeleteClick(this.handleDelete.bind(this))
-    /* end modal events */
 
     this.showMonth()
   }
@@ -51,7 +49,7 @@ export default class Controller {
   }
 
   showAddTodo () {
-    this.view.openModal()
+    this.view.openModal('add')
   }
 
   handleSubmit (e, data) {
