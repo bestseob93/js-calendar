@@ -50,12 +50,16 @@ export default class Template {
             const isSunday = days[k].name === '일'
             const dateForCompare = days[k].date.format('YYYY-MM-DD')
 
+            console.log(days[k])
             if (remain === 0) {
+              console.log(days[k].hasEvents)
               const startData = days[k].hasEvents.filter((data) => {
                 if (isSunday) { return true }
                 const isStartDay = getYYYYMMDD(data.startDate) === dateForCompare
                 return isStartDay
               })[renderCounts[k]]
+
+              console.log(startData)
 
               if (startData) {
                 const startYYYMMDD = getYYYYMMDD(startData.startDate)
