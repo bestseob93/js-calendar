@@ -170,14 +170,6 @@ export default class Calendar {
       return getYYYYMMDD(data.startDate) === date.format('YYYY-MM-DD') && getYYYYMMDD(data.endDate) === date.format('YYYY-MM-DD')
     })
 
-    const range = []
-    hasTodo.filter(data => {
-      const startHour = parseInt(gethhdd(data.startDate).split(':')[0], 10)
-      const endHour = parseInt(gethhdd(data.endDate).split(':')[0], 10)
-
-      range.push(endHour - startHour)
-    })
-
     for (let i = 0; i < 24; i++) {
       hours.push({
         number: i,
