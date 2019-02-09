@@ -66,7 +66,6 @@ export default class View {
    * Initialize
    */
   init () {
-    this.$calendar.innerHTML = this.template.show('month')
     this.renderTodayDate()
   }
 

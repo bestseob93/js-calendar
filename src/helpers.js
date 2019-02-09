@@ -82,9 +82,9 @@ export function generateRandomColor () {
 
   if (color.length < 7) {
     generateRandomColor()
+  } else {
+    return color
   }
-
-  return color
 }
 
 /**
