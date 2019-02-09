@@ -270,7 +270,7 @@ export default class View {
   }
 
   /**
-   * Render Month when mode is month
+   * Render calendar by type
    *
    * @param {string} type type of calendar
    * @param {Array} datas Array of datas to display
