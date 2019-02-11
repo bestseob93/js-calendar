@@ -78,13 +78,13 @@ export function compareToSort (a, b) {
  * @return {string} example: #ffffff
  */
 export function generateRandomColor () {
-  const color = `#${Math.floor(Math.random() * 16777215).toString(16)}` // 백그라운드에 사용할 랜덤 컬러
+  let color = `#${Math.floor(Math.random() * 16777215).toString(16)}` // 백그라운드에 사용할 랜덤 컬러
 
   if (color.length < 7) {
-    generateRandomColor()
-  } else {
-    return color
+    color = generateRandomColor()
   }
+
+  return color
 }
 
 /**
@@ -98,6 +98,7 @@ export function htmlEscape (s) {
     .replace(/'/g, '&#039;')
     .replace(/"/g, '&quot;')
     .replace(/\n/g, '<br />')
+    .replace(/ /g, '&nbsp')
 }
 
 export function getMsFromDate (YYYYMMDD) {

@@ -9,7 +9,7 @@ var CompressionWebpackPlugin = require('compression-webpack-plugin');
 
 var appDirectory = fs.realpathSync(process.cwd()); // 디렉토리 경로
 
-var resolveApp = function(relativePath) {
+var resolveApp = function (relativePath) {
   return path.resolve(appDirectory, relativePath);
 };
 

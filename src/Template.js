@@ -3,7 +3,8 @@ import {
   getYYYYMMDD,
   gethhdd,
   getDayName,
-  MS_OF_DAY
+  MS_OF_DAY,
+  htmlEscape
 } from 'helpers'
 
 export default class Template {
@@ -50,16 +51,12 @@ export default class Template {
             const isSunday = days[k].name === '일'
             const dateForCompare = days[k].date.format('YYYY-MM-DD')
 
-            console.log(days[k])
             if (remain === 0) {
-              console.log(days[k].hasEvents)
               const startData = days[k].hasEvents.filter((data) => {
                 if (isSunday) { return true }
                 const isStartDay = getYYYYMMDD(data.startDate) === dateForCompare
                 return isStartDay
               })[renderCounts[k]]
-
-              console.log(startData)
 
               if (startData) {
                 const startYYYMMDD = getYYYYMMDD(startData.startDate)
@@ -86,7 +83,7 @@ export default class Template {
 
                 weekHtml[k] += `<div
                   class="calendar__event ${isStartDay ? 'calendar__event--start' : ''} ${isEndDay ? 'calendar__event--end' : ''}"
-                  data-event=${JSON.stringify(remainEvent)}
+                  data-event=${htmlEscape(JSON.stringify(remainEvent))}
                   style="${eventStyle}">
                     <span class="event__title">${isStartDay ? remainEvent.title : ' '}</span>
                 </div>`.trim()
@@ -182,7 +179,7 @@ export default class Template {
               weekHtml[i] += `
                 <div
                   class="calendar__event"
-                  data-event=${JSON.stringify(remainEvent)}
+                  data-event=${htmlEscape(JSON.stringify(remainEvent))}
                   style="${eventStyle}">
                     <span class="event__title">${isStartDay ? remainEvent.title : ' '}</span>
                 </div>`.trim()
