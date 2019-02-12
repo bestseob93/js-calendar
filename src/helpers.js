@@ -41,11 +41,15 @@ export function $on (target, type, callback, useCapture) {
  * @param {boolean} [capture] Capture the event
  */
 export function $delegate (target, selector, type, handler) {
+  console.log(target, selector, type, handler)
   function dispatchEvent (event) {
     const targetElement = event.target
+    console.log(targetElement)
     const potentialElements = qsa(selector, target)
+    console.log(potentialElements)
     const hasMatch = Array.prototype.indexOf.call(potentialElements, targetElement) >= 0
 
+    console.log(hasMatch)
     if (hasMatch) {
       handler.call(targetElement, event)
     }

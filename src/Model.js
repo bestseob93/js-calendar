@@ -50,34 +50,7 @@ export default class Calendar {
 
     while (!isNextMonth) {
       this.week.push({
-        days: this.buildWeekForMonth(date.clone(), month),
-        hasEventsInWeek: this.datas.filter(data => {
-          const newDate = date.clone()
-          const startOfWeek = getMsFromDate(newDate.startOf('week').format('YYYY-MM-DD'))
-          const endOfWeek = getMsFromDate(newDate.endOf('week').format('YYYY-MM-DD'))
-          const startDate = getMsFromDate(getYYYYMMDD(data.startDate))
-          const endDate = getMsFromDate(getYYYYMMDD(data.endDate))
-          const SEVEN = MS_OF_DAY * 7
-          if (startDate > endOfWeek) {
-            return false
-          }
-
-          if (endDate < startOfWeek) {
-            return false
-          }
-
-          if (startOfWeek <= startDate && endOfWeek >= startDate) {
-            return true
-          }
-
-          if (endDate - startOfWeek > SEVEN) {
-            return true
-          }
-
-          if (endDate - startOfWeek < SEVEN && endDate - startOfWeek >= 0) {
-            return true
-          }
-        }).sort(compareToSort)
+        days: this.buildWeekForMonth(date.clone(), month)
       })
       date.add(1, 'w')
       isNextMonth = count++ === 5 // 6줄로 렌더링
@@ -306,7 +279,7 @@ export default class Calendar {
     } else if (this.type === 'week') {
       const prev = this.month.week(this.month.week() - 1)
       this.removeTime(prev.date(this.month.date()))
-      this.buildWeekForWeek(prev, this.month)
+      this.buildWeekForWeek(prev)
 
       callback(this.type, this.days)
     } else if (this.type === 'day') {
